@@ -1,5 +1,6 @@
 package com.alibaba.sca.temp.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,9 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
+    @Value("${test.user.name}")
+    private String userName;
+
     @RequestMapping("/hello")
     @ResponseBody
     public String hello() {
-        return "hello world";
+        return "hello " + userName;
     }
 }

@@ -5,3 +5,5 @@ management.server.port=8081
 management.endpoints.jmx.exposure.include=*
 management.endpoints.web.exposure.include=*
 management.endpoint.health.show-details=always
+
+test.user.name=${test.user.name}
