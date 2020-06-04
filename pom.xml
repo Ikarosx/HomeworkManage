@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
-        <APP_NAME>${project.artifactId}</APP_NAME>
+        <applicationName>${project.artifactId}</applicationName>
     </properties>
 
     <dependencies>
@@ -48,7 +48,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>${APP_NAME}</finalName>
+        <finalName>${applicationName}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,19 +72,6 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.alibaba.citrus.tool</groupId>
-                <artifactId>autoconfig-maven-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>autoconfig</goal>
                         </goals>
                     </execution>
                 </executions>

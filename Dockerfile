@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/devcloud_base_image/openjdk:8
+FROM openjdk:8
 
 ARG APP_NAME
 ENV APP_NAME=${APP_NAME}
