@@ -57,6 +57,18 @@
     3、开始部署到线上环境。在IDE左边工具栏中打开云开发插件，然后点击部署按钮，开始部署到云端。如果部署成功，则会在输出日志中，打印一个临时域名，可以直接访问。 
     到这一步，存量web应用就算迁移完了。
 
+![](https://img.alicdn.com/tfs/TB1V3fctoY1gK0jSZFMXXaWcVXa-1432-600.png "")
 
-   
-    
+### 编写文档
+
+项目推进过程中，你的经验和感悟可以直接记录到 Codeup 代码库的「[__文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5e13107eedac6e001bd84889)」内，让智慧可视化。
+
+![](https://img.alicdn.com/tfs/TB1BN2ateT2gK0jSZFvXXXnFXXa-1432-700.png "")
+
+### 成员协作
+
+是时候邀请成员一起编写卓越的代码工程了，请点击右上角「成员」邀请你的小伙伴开始协作吧！
+
+### 更多
+
+Git 使用教学、高级功能指引等更多说明，参见[__Codeup帮助文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6756b81620014ef7571)。
