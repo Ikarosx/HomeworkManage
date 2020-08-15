@@ -48,4 +48,8 @@ public class SessionUtils {
   public static String getUserName() {
     return getUser().getUsername();
   }
+
+  public static String getClassId() {
+    return getUser().getClassId();
+  }
 }
