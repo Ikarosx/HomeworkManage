@@ -1,42 +1,91 @@
-## NodeJS存量应用迁移方案
-> 已有的NodeJS应用无需改造即可快速通过此方案部署到Serverless架构之上，享受实时弹性、按量付费的收益。
+# vue-admin-template
 
-## 如何迁移
-> 前提：应用文件总大小小于 50MB
+English | [简体中文](./README-zh.md)
 
-### 步骤一
-- 登录云开发平台，进入「应用列表」，创建新应用，在「技术场景」「WEB」类目下选择「NodeJS存量应用迁移方案」，并根据指引完成应用的创建
+> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
 
-### 步骤二
-- 在新创建出来的应用卡片上，点击「开发部署」，进入 CloudIDE 云开发界面
+**Live demo:** http://panjiachen.github.io/vue-admin-template
 
-- 打开 CloudIDE 资源管理器的文件列表，打开本地的 NodeJS 存量应用的根目录，将应用根目录下的所有文件拖拽至 CloudIDE 资源管理器的文件列表
 
-### 步骤三
-- 打开 CloudIDE 部署插件，选择「日常环境」，点击「部署」，部署成功后即可通过自动分配的临时域名查看运行效果
+**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
 
-### 步骤四
-- 在日常环境和预发环境都测试无误后，在应用卡片的「应用管理」面板，选择「线上环境」按照提示绑定您自己的域名
+## Build Setup
 
-### 步骤五
-- 回到 CloudIDE，打开部署插件，选择「线上环境」，点击「部署」，部署成功后，即可通过您自己的域名查看线上运行的效果
 
-## 数据库示例
-- 如果你的应用需要操作数据库，可以参考本示例中的数据库示例
+```bash
+# clone the project
+git clone https://github.com/PanJiaChen/vue-admin-template.git
+
+# enter the project directory
+cd vue-admin-template
+
+# install dependency
+npm install
+
+# develop
+npm run dev
 ```
-defalut.html      演示了通过 AJAX 方式读取 RDS 数据库数据
-/api/db_config.js 演示了如何连接 RDS 和 OTS 数据库
-/api/db_get.js    演示了如何读取 RDS 和 OTS 数据库
-package.json      演示了数据库操作需要安装的 npm 依赖
+
+This will automatically open http://localhost:9528
+
+## Build
+
+```bash
+# build for test environment
+npm run build:stage
+
+# build for production environment
+npm run build:prod
 ```
-- 要测试数据库效果，需要在「应用配置」中添加以下用于测试的环境变量，如果要开发自己的数据库应用，以下环境变量需要替换成自己的真实信息
+
+## Advanced
+
+```bash
+# preview the release environment effect
+npm run preview
+
+# preview the release environment effect + static resource analysis
+npm run preview -- --report
+
+# code format check
+npm run lint
+
+# code format check and auto fix
+npm run lint -- --fix
 ```
-OTS_ENDPOINT=https://todolist.cn-shanghai.ots.aliyuncs.com
-OTS_INSTANCE=todolist
-OTS_ACCESSKEY=LTAI4G1j3U8ue1yT3g6Tg1TG
-OTS_SECRET=WB8Ev6zMHoKQnUSLp8V4zP7xeAgbWC
-RDS_HOST=rm-uf6y14uhf0080yfrb7o.mysql.rds.aliyuncs.com
-RDS_DBNAME=faas-test
-RDS_USERNAME=faas_db_test
-RDS_PASSWORD=YY6i8Jp7W_mtYxU
-```
+
+Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+
+## Demo
+
+![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
+
+## Extra
+
+If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+
+For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+
+## Related Project
+
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+
+- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+
+- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
+
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
+
+## Browsers support
+
+Modern browsers and Internet Explorer 10+.
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+
+## License
+
+[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
+
+Copyright (c) 2017-present PanJiaChen
