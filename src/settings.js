@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: "布叮校园管理后台",
+  title: "作业管理系统",
 
   /**
    * @type {boolean} true | false

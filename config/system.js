@@ -1,5 +1,5 @@
 export const systemConfig = {
-  bdApiUrl: "http://budingcc.cn:30000/api",
+  apiUrl: "http://localhost:8080",
   imgUrl: "http://img.budingcc.cn/",
   openAuthenticate: false,
   openAuthorize: false

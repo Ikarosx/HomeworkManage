@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">布叮后台管理</h3>
+        <h3 class="title">作业管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -64,7 +64,7 @@ export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value.length > 20) {
         callback(new Error("Please enter the correct user name"));
       } else {
         callback();
@@ -79,29 +79,29 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111"
+        username: "",
+        password: "",
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: "blur", validator: validateUsername },
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
-        ]
+          { required: true, trigger: "blur", validator: validatePassword },
+        ],
       },
       loading: false,
       passwordType: "password",
-      redirect: undefined
+      redirect: undefined,
     };
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     showPwd() {
@@ -115,17 +115,27 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
+            .then((res) => {
+              console.log(res);
+              if (res.success) {
+                window.localStorage.setItem("user", res.data.user);
+                this.$store.commit("user/SET_NAME",res.data.user.username)
+                this.$message.success("登陆成功");
+                this.$router.push({ path: this.redirect || "/" });
+              } else {
+                this.$message.error(res.message);
+              }
+
               this.loading = false;
             })
-            .catch(() => {
-              this.$router.push({ path: this.redirect || "/" });
+            .catch((err) => {
+              console.log(err);
+              this.$message.error(err);
               this.loading = false;
             });
         } else {
@@ -133,8 +143,8 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
