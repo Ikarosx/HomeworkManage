@@ -96,6 +96,8 @@ export default {
     }
   },
   mounted() {
+
+    
   },
   methods: {
     deleteClass() {

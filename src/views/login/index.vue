@@ -123,8 +123,10 @@ export default {
             .then((res) => {
               console.log(res);
               if (res.success) {
-                window.localStorage.setItem("user", res.data.user);
+                window.localStorage.setItem("user", JSON.stringify(res.data.user));
                 this.$store.commit("user/SET_NAME",res.data.user.username)
+                this.$store.commit("user/SET_CLASSID",res.data.user.classId)
+                this.$store.commit("user/SET_ISADMIN",res.data.user.type == 1)
                 this.$message.success("登陆成功");
                 this.$router.push({ path: this.redirect || "/" });
               } else {
@@ -134,8 +136,6 @@ export default {
               this.loading = false;
             })
             .catch((err) => {
-              console.log(err);
-              this.$message.error(err);
               this.loading = false;
             });
         } else {

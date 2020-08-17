@@ -142,7 +142,7 @@ export default {
           this.listLoading = false;
         })
         .catch(error => {
-          this.$message.error(error);
+          this.$message.error(error.message);
           this.listLoading = false;
         });
     },

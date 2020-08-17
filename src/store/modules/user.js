@@ -1,6 +1,6 @@
-import { login, logout, getInfo } from "@/api/auth";
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { resetRouter } from "@/router";
+import { router } from "@/router";
+import Layout from "@/layout"
 import http from "@/api/public";
 import { systemConfig } from "@/../config/system";
 const apiUrl = systemConfig.apiUrl;
@@ -9,7 +9,10 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: "",
-    avatar: ""
+    avatar: "https://ikaros-picture.oss-cn-shenzhen.aliyuncs.com/typora/Ikaros/timg.jpg",
+    isAdmin: false,
+    classId: "",
+    routes: []
   };
 };
 
@@ -27,6 +30,15 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
+  },
+  SET_ISADMIN: (state, isAdmin) => {
+    state.isAdmin = isAdmin;
+  },
+  SET_CLASSID: (state, classId) => {
+    state.classId = classId;
+  },
+  SET_ROUTES: (state, routes) => {
+    state.routes = routes;
   }
 };
 
@@ -42,13 +54,10 @@ const actions = {
       getInfo(state.token)
         .then(response => {
           const { data } = response;
-
           if (!data) {
             reject("Verification failed, please Login again.");
           }
-
           const { name, avatar } = data;
-
           commit("SET_NAME", name);
           commit("SET_AVATAR", avatar);
           resolve(data);
@@ -78,5 +87,5 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };

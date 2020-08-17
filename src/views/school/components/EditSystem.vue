@@ -16,7 +16,6 @@
 import * as schoolApi from "../api"
 import querystring from "querystring"
 import axios from "axios"
-import request from "@/utils/request"
 export default {
     props:{
         update:{

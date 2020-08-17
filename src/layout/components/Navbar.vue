@@ -62,9 +62,7 @@ export default {
             this.$message.error(result.message);
           }
         })
-        .catch((error) => {
-          this.$message.error(error);
-        });
+        .catch((error) => {});
     },
   },
 };
