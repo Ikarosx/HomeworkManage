@@ -12,7 +12,6 @@ import lombok.Data;
  */
 @Data
 @ApiModel("作业完成情况")
-@AllArgsConstructor
 public class HomeworkFinishInfo {
   @ApiModelProperty("昵称")
   private String nickname;
@@ -25,4 +24,11 @@ public class HomeworkFinishInfo {
 
   @ApiModelProperty("完成时间")
   private Date createTime;
+
+  public HomeworkFinishInfo(String nickname, String studentNo, Integer status, Date createTime) {
+    this.nickname = nickname;
+    this.studentNo = studentNo;
+    this.status = status;
+    this.createTime = createTime;
+  }
 }

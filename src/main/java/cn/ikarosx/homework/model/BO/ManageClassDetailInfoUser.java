@@ -10,11 +10,19 @@ import lombok.Data;
  * @date 2020-08-15 01:42:01
  */
 @Data
-@AllArgsConstructor
 public class ManageClassDetailInfoUser implements Serializable {
   private String id;
   private String username;
   private String nickname;
   private String studentNo;
   private Date createTime;
+
+  public ManageClassDetailInfoUser(String id, String username, String nickname, String studentNo,
+      Date createTime) {
+    this.id = id;
+    this.username = username;
+    this.nickname = nickname;
+    this.studentNo = studentNo;
+    this.createTime = createTime;
+  }
 }

@@ -12,7 +12,6 @@ import lombok.Data;
  */
 @Data
 @ApiModel("用户查询作业详情,包含完成状态")
-@AllArgsConstructor
 public class ManageHomeworkDetails {
   @ApiModelProperty(value = "作业ID")
   private String id;
@@ -34,4 +33,15 @@ public class ManageHomeworkDetails {
 
   @ApiModelProperty(value = "更新时间", hidden = true)
   private Date updateTime;
+
+  public ManageHomeworkDetails(String id, String title, String description, Date deadline,
+      Boolean finish, Date createTime, Date updateTime) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.deadline = deadline;
+    this.finish = finish;
+    this.createTime = createTime;
+    this.updateTime = updateTime;
+  }
 }
