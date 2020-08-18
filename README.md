@@ -1,74 +1,48 @@
-## 3 分钟了解存量SpringBoot应用迁移到云开发平台
+# 作业管理系统
 
-### 1、您能看到这篇文章，说明已经创建的一个应用，并且已经打开了CloudIDE。是的，第一步，就是需要创建一个云应用，然后打开CloudIDE；
+## 功能
 
-### 2、把存量的SpringBoot应用迁移到云开发目录下： 拖动工程根目录下的src、pom.xml 到CloudIDE工程目录下，就能完成迁移。
+### 认证
 
-### 3、修改pom.xml, 以满足云开发平台构建镜像的规范:
-```
-   <properties>
-        <applicationName>${project.artifactId}</applicationName>
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
-   </properties>
-   ...
-   <build>
-      <finalName>${applicationName}</finalName>
-      <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring-boot.version}</version>
-            <configuration>
-                <mainClass>com.alibaba.sca.temp.web.Application</mainClass>
-                <layout>ZIP</layout>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-      ...
-    </build>
-```
-   最好再加上java编译版本，1.8：
-```
-   <build>
-      <plugins>
-           <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            ...
-        </plugins>
-    </build>
-```
-    
-### 4、到这里已经迁移完毕。需要验证一下是否迁移成功。
-    1、CloudIDE-Native启动：在cloudide的右下角Termial中的命令行中，输入启动命名：mvn spring-boot:run ,验证是否能在IDE容器中启动成功，启动成功后在IDE左下角有一个“预览”功能，可以把云端IDE启动的服务在本地浏览器中访问到，则说明Cloud-Native配置是OK的。
-    2、提交代码到CodeUp上；
-    3、开始部署到线上环境。在IDE左边工具栏中打开云开发插件，然后点击部署按钮，开始部署到云端。如果部署成功，则会在输出日志中，打印一个临时域名，可以直接访问。 
-    到这一步，存量web应用就算迁移完了。
+#### 注册
+任意用户可自行注册
 
-![](https://img.alicdn.com/tfs/TB1V3fctoY1gK0jSZFMXXaWcVXa-1432-600.png "")
+#### 登陆
+输入账号密码即可登陆
 
-### 编写文档
+### 班级管理
 
-项目推进过程中，你的经验和感悟可以直接记录到 Codeup 代码库的「[__文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5e13107eedac6e001bd84889)」内，让智慧可视化。
+#### 创建班级
+任意用户可以创建班级，需要系统管理员同意，默认创建者为班级管理员
 
-![](https://img.alicdn.com/tfs/TB1BN2ateT2gK0jSZFvXXXnFXXa-1432-700.png "")
+#### 加入班级
+未加入班级的用户可以选择班级加入，需要班级管理员同意
 
-### 成员协作
 
-是时候邀请成员一起编写卓越的代码工程了，请点击右上角「成员」邀请你的小伙伴开始协作吧！
+### 成员管理
 
-### 更多
+#### 添加成员
+##### 手动添加
+班级管理员可以手动添加成员，被添加成员的账号如未创建自动创建
+##### 使用Excel导入成员
+班级管理员可以直接导入Excel的方式添加成员，被添加成员的账号如未创建自动创建
+Excel需要按照一定格式
 
-Git 使用教学、高级功能指引等更多说明，参见[__Codeup帮助文档__](https://thoughts.teambition.com/sharespace/5d88b152037db60015203fd3/docs/5dc4f6756b81620014ef7571)。
+#### 删改查
+
+### 作业管理
+
+#### 添加作业
+班级管理员可以添加班级作业
+科目、截止时间、作业说明、附件
+
+#### 提交作业
+班级成员可以查看所有作业、未完成、已完成，并对未完成的作业进行提交
+
+#### 统计作业
+班级管理员可以统计
+哪些成员没有提交作业
+单次作业的班级完成率
+每个成员的历史完成率
+
+

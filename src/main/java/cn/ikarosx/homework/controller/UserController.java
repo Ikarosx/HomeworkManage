@@ -2,16 +2,22 @@ package cn.ikarosx.homework.controller;
 
 import cn.ikarosx.homework.aspect.IsOwner;
 import cn.ikarosx.homework.aspect.NeedAdmin;
+import cn.ikarosx.homework.entity.User;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.ResponseResult;
+import cn.ikarosx.homework.model.param.LoginParam;
 import cn.ikarosx.homework.model.param.insert.UserInsertParam;
 import cn.ikarosx.homework.model.param.query.UserQueryParam;
 import cn.ikarosx.homework.model.param.update.UserUpdateParam;
+import cn.ikarosx.homework.service.ManageClassService;
 import cn.ikarosx.homework.service.UserService;
+import cn.ikarosx.homework.util.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.LinkedList;
 import org.apache.commons.lang3.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +27,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Ikarosx
@@ -32,12 +37,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户")
 public class UserController {
   @Autowired private UserService userService;
+  @Autowired private ManageClassService manageClassService;
 
   @PostMapping
   @ApiOperation(value = "新增用户")
   public ResponseResult insertUser(@Validated @RequestBody UserInsertParam userInsertParam) {
     userInsertParam.setPassword(BCrypt.hashpw(userInsertParam.getPassword(), BCrypt.gensalt()));
-    return userService.insertUser(userInsertParam);
+    User user = new User();
+    BeanUtils.copyProperties(userInsertParam, user);
+    user.setType(0);
+    String userId = userService.insertUser(user);
+    return CommonCodeEnum.SUCCESS.clearData().addData("userId", userId);
   }
 
   @DeleteMapping("/{id}")
@@ -63,7 +73,7 @@ public class UserController {
     return userService.getUserById(id);
   }
 
-  @GetMapping("/{page}/{size}")
+  @GetMapping("/list/{page}/{size}")
   @ApiOperation(value = "分页查询用户")
   public ResponseResult listUsersByPage(
       @PathVariable int page, @PathVariable int size, UserQueryParam userQueryParam) {
@@ -79,7 +89,7 @@ public class UserController {
     return userService.listUsersByPage(page, size, userQueryParam);
   }
 
-  @GetMapping
+  @GetMapping("/list/all")
   @ApiOperation(value = "查询全部用户")
   @NeedAdmin
   public ResponseResult listAllUsers() {
@@ -88,16 +98,38 @@ public class UserController {
 
   @PostMapping("/login")
   @ApiOperation("用户登录")
-  public ResponseResult login(@RequestParam String username, @RequestParam String password) {
-    if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-      return CommonCodeEnum.INVALID_PARAM;
-    }
-    return userService.login(username, password);
+  public ResponseResult login(@RequestBody @Validated LoginParam loginParam) {
+    return userService.login(loginParam.getUsername(), loginParam.getPassword());
   }
 
   @GetMapping("/logout")
   @ApiOperation("用户注销")
   public ResponseResult logout() {
     return userService.logout();
+  }
+
+  @GetMapping("/menus")
+  @ApiOperation("获取用户权限菜单")
+  public ResponseResult getMenusAndRoles() {
+    LinkedList<String> menus = new LinkedList<>();
+    LinkedList<String> roles = new LinkedList<>();
+    // 判断是否是管理员
+    if (SessionUtils.isAdmin()) {
+      roles.add("admin");
+      menus.add("class");
+    }
+    if (StringUtils.isNotBlank(SessionUtils.getClassId())) {
+      menus.add("homework");
+    }
+    // 判断是否是班级管理员
+    // SessionUtils.getClassId() != null 防止查询不到班级
+    if (SessionUtils.getClassId() != null
+        && StringUtils.equals(
+            SessionUtils.getId(),
+            manageClassService.getManageClassById(SessionUtils.getClassId()).getAdminUserId())) {
+      roles.add("classAdmin");
+      menus.add("class");
+    }
+    return CommonCodeEnum.SUCCESS.clearData().addData("menus", menus, "roles", roles);
   }
 }

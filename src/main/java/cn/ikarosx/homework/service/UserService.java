@@ -1,5 +1,6 @@
 package cn.ikarosx.homework.service;
 
+import cn.ikarosx.homework.entity.User;
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.model.param.insert.UserInsertParam;
 import cn.ikarosx.homework.model.param.query.UserQueryParam;
@@ -10,7 +11,7 @@ import cn.ikarosx.homework.model.param.update.UserUpdateParam;
  * @date 2020/08/15 14:10
  */
 public interface UserService {
-  ResponseResult insertUser(UserInsertParam userInsertParam);
+  String insertUser(User user);
 
   ResponseResult deleteUserById(String id);
 
@@ -31,4 +32,8 @@ public interface UserService {
   boolean isClassOwner(String classId);
 
   boolean isAdmin();
+
+  void clearClassIdByUserId(String id);
+
+    void updateClassIdByUserId(String id, String classId);
 }

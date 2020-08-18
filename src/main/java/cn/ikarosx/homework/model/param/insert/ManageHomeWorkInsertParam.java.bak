@@ -1,0 +1,15 @@
+
+package cn.ikarosx.homework.model.param.insert;
+
+import lombok.Data;
+import io.swagger.annotations.ApiModel;
+
+/**
+ * @author Ikarosx
+ * @date 2020/08/17 14:16
+ */
+@Data
+@ApiModel(value = "作业Insert参数")
+public class ManageHomeworkInsertParam {}
+
+    

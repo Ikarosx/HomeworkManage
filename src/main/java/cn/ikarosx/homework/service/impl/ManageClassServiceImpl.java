@@ -1,11 +1,12 @@
 package cn.ikarosx.homework.service.impl;
 
+import cn.ikarosx.homework.constant.ManageClassUserStatusEnum;
 import cn.ikarosx.homework.entity.ManageClass;
-import cn.ikarosx.homework.entity.User;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.CustomException;
 import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
+import cn.ikarosx.homework.model.BO.ManageClassDetailInfoUser;
 import cn.ikarosx.homework.model.param.insert.ManageClassInsertParam;
 import cn.ikarosx.homework.model.param.query.ManageClassQueryParam;
 import cn.ikarosx.homework.model.param.update.ManageClassUpdateParam;
@@ -15,7 +16,6 @@ import cn.ikarosx.homework.service.ManageClassService;
 import cn.ikarosx.homework.util.SessionUtils;
 import cn.ikarosx.homework.util.UpdateUtils;
 import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +39,13 @@ public class ManageClassServiceImpl implements ManageClassService {
 
   @Override
   @Transactional
-  public ResponseResult insertManageClass(ManageClassInsertParam manageClassInsertParam) {
+  public String insertManageClass(ManageClassInsertParam manageClassInsertParam) {
     ManageClass manageClass = new ManageClass();
     BeanUtils.copyProperties(manageClassInsertParam, manageClass);
     manageClass.setAdminUserId(SessionUtils.getId());
     manageClassRepository.save(manageClass);
-    User user = SessionUtils.getUser();
-    user.setClassId(manageClass.getId());
-    // 更新所属班级
-    userRepository.save(user);
-    SessionUtils.setAttribute("user", user);
-    return CommonCodeEnum.SUCCESS.clearData();
+
+    return manageClass.getId();
   }
 
   @Override
@@ -59,7 +55,8 @@ public class ManageClassServiceImpl implements ManageClassService {
             .findById(id)
             .orElseThrow(() -> new CustomException(CommonCodeEnum.PERMISSION_DENY));
     // 如果当前用户不是班级所属管理员
-    if (!SessionUtils.isAdmin() && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
+    if (!SessionUtils.isAdmin()
+        && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }
     manageClassRepository.deleteById(id);
@@ -73,7 +70,8 @@ public class ManageClassServiceImpl implements ManageClassService {
             .findById(manageClassUpdateParam.getId())
             .orElseThrow(() -> new CustomException(CommonCodeEnum.PERMISSION_DENY));
     // 如果当前用户不是班级所属管理员
-    if (!SessionUtils.isAdmin() && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
+    if (!SessionUtils.isAdmin()
+        && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }
     UpdateUtils.copyNullProperties(manageClassUpdateParam, manageClass);
@@ -82,13 +80,12 @@ public class ManageClassServiceImpl implements ManageClassService {
   }
 
   @Override
-  public ResponseResult getManageClassById(String id) {
-    Optional<ManageClass> optional = manageClassRepository.findById(id);
-    ManageClass manageClass = optional.orElse(null);
-    if (manageClass == null) {
-      ExceptionCast.cast(CommonCodeEnum.DATA_NOT_FOUND);
-    }
-    return CommonCodeEnum.SUCCESS.addData("manageClass", manageClass);
+  public ManageClass getManageClassById(String id) {
+    ManageClass manageClass =
+        manageClassRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    return manageClass;
   }
 
   @Override
@@ -116,5 +113,25 @@ public class ManageClassServiceImpl implements ManageClassService {
   public ResponseResult listAllManageClasss() {
     List<ManageClass> list = manageClassRepository.findAll();
     return CommonCodeEnum.SUCCESS.addData("list", list, "total", list.size());
+  }
+
+  @Override
+  public List<ManageClassDetailInfoUser> listAllManageClassUser(String classId, Integer status) {
+    ManageClass manageClass =
+        manageClassRepository
+            .findById(classId)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    // 必须同班才能查询
+    if (!StringUtils.equals(SessionUtils.getClassId(), classId)) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    // 如果要查询除了通过以外的的，必须是管理员
+    if (ManageClassUserStatusEnum.Joined.getStatus().equals(status)
+        && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    List<ManageClassDetailInfoUser> users =
+        manageClassRepository.findAllByClassIdAndStatus(classId, status);
+    return users;
   }
 }

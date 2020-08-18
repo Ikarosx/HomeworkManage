@@ -38,6 +38,12 @@ public class User implements Serializable {
   @ApiModelProperty(value = "密码")
   private String password;
 
+  @ApiModelProperty(value = "学号")
+  private String studentNo;
+
+  @ApiModelProperty(value = "昵称")
+  private String nickname;
+
   @ApiModelProperty(value = "0:普通用户, 1:系统管理员", hidden = true)
   private Integer type;
 

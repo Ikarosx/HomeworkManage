@@ -20,6 +20,7 @@ public enum CommonCodeEnum implements ResponseResult {
   IO_EXCEPTION(false, 10005, "IO异常"),
   DATA_NOT_FOUND(false, 10006, "数据不存在"),
   HTTP_REQUEST_METHOD_NOT_SUPPORT_EDEXCEPTION(false, 10007, "HTTP请求方法不支持"),
+  DATA_EXIST_ERROR(false, 10008, "数据已存在"),
   FAIL(false, 11111, "操作失败！"),
   SERVER_ERROR(false, 99999, "系统繁忙，请稍后重试！"),
   /** 用户相关 11000 */

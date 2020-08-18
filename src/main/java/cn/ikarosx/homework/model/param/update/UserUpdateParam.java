@@ -1,9 +1,8 @@
-
 package cn.ikarosx.homework.model.param.update;
 
-import javax.validation.constraints.NotNull;
-import lombok.Data;
 import io.swagger.annotations.ApiModel;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * @author Ikarosx
@@ -13,8 +12,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "用户Update参数")
 public class UserUpdateParam {
 
-    @NotNull private String id;
-    @NotNull private String password;
+  @NotBlank private String id;
+  @NotBlank private String password;
+  private String nickname;
 }
-
-    

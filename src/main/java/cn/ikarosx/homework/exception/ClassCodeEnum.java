@@ -12,7 +12,13 @@ import java.util.Map;
 public enum ClassCodeEnum implements ResponseResult {
 
   /** 班级相关 12000 */
-  CLASS_MEMBER_CAN_NOT_CREATE_CLASS(false, 12001, "已经为班级成员无法添加班级");
+  CLASS_MEMBER_CAN_NOT_CREATE_CLASS(false, 12001, "已经为班级成员无法添加班级"),
+  ADMIN_NOT_FOUND_ERROR(false, 12002, "管理员数据无法找到"),
+  CLASS_MEMBER_CAN_NOT_JSON_CLASS(false, 12003, "你已经加入了一个班级，无法加入另一个"),
+  CLASS_NOT_FOUNT_ERROR(false, 12004, "班级不存在"),
+  WAITING_ADMIN_AGREE(false, 12005, "你已经申请加入班级，请等待管理员同意"),
+  AGREE_ERROR(false, 12006, "该成员已经加入其他班级");
+
   private boolean success;
   private int code;
   private String message;

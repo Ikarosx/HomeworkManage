@@ -1,13 +1,13 @@
 package cn.ikarosx.homework.service.impl;
 
+import cn.ikarosx.homework.entity.ManageClass;
 import cn.ikarosx.homework.entity.User;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.CustomException;
-import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
-import cn.ikarosx.homework.model.param.insert.UserInsertParam;
 import cn.ikarosx.homework.model.param.query.UserQueryParam;
 import cn.ikarosx.homework.model.param.update.UserUpdateParam;
+import cn.ikarosx.homework.repository.ManageClassRepository;
 import cn.ikarosx.homework.repository.UserRepository;
 import cn.ikarosx.homework.service.UserService;
 import cn.ikarosx.homework.util.SessionUtils;
@@ -33,14 +33,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
   @Autowired private UserRepository userRepository;
+  @Autowired private ManageClassRepository manageClassRepository;
 
   @Override
-  public ResponseResult insertUser(UserInsertParam userInsertParam) {
-    User user = new User();
-    BeanUtils.copyProperties(userInsertParam, user);
+  public String insertUser(User user) {
     user.setType(0);
     userRepository.save(user);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return user.getId();
   }
 
   @Override
@@ -62,11 +61,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public ResponseResult getUserById(String id) {
-    Optional<User> optional = userRepository.findById(id);
-    User user = optional.orElse(null);
-    if (user == null) {
-      ExceptionCast.cast(CommonCodeEnum.DATA_NOT_FOUND);
-    }
+    User user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
     return CommonCodeEnum.SUCCESS.addData("user", user);
   }
 
@@ -121,13 +119,46 @@ public class UserServiceImpl implements UserService {
     return StringUtils.isNotBlank(SessionUtils.getClassId());
   }
 
+  /**
+   * 判断当前用户是否是传入班级ID的管理员
+   *
+   * @param classId
+   * @return
+   */
   @Override
   public boolean isClassOwner(String classId) {
-    return StringUtils.equals(classId, SessionUtils.getClassId());
+    return StringUtils.equals(
+        manageClassRepository.findById(classId).orElse(new ManageClass()).getAdminUserId(),
+        SessionUtils.getId());
   }
 
   @Override
   public boolean isAdmin() {
     return SessionUtils.isAdmin();
+  }
+
+  /**
+   * 退出班级后清除ClassId
+   *
+   * @param id
+   */
+  @Override
+  public void clearClassIdByUserId(String id) {
+    User user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    user.setClassId(null);
+    userRepository.save(user);
+  }
+
+  @Override
+  public void updateClassIdByUserId(String id, String classId) {
+    User user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    user.setClassId(classId);
+    userRepository.save(user);
   }
 }
