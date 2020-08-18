@@ -11,15 +11,14 @@
       <div class="title-container">
         <h3 class="title">作业管理系统</h3>
       </div>
-
-      <el-form-item prop="username">
+      <el-form-item prop="username" required>
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -27,7 +26,7 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="password" required>
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
@@ -36,7 +35,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -46,37 +45,64 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
+      <!-- 注册 -->
+      <div v-if="register == true">
+        <el-form-item prop="studentNo" required>
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="studentNo"
+            v-model="loginForm.studentNo"
+            placeholder="学号"
+            name="studentNo"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item prop="nickname">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="nickname"
+            v-model="loginForm.nickname"
+            placeholder="昵称"
+            name="nickname"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+      </div>
       <el-button
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >{{register == false ? "登陆" : "注册"}}</el-button>
+      <el-row type="flex" justify="center" align="center">
+        <div v-if="register == false">
+          <span style="color:white" href="#">忘记密码</span>
+          <el-divider direction="vertical"></el-divider>
+          <span style="color:white;cursor:pointer" @click="register = true">点我注册</span>
+        </div>
+        <div v-else>
+          <span style="color:white;cursor:pointer" @click="register = false">点我登陆</span>
+        </div>
+      </el-row>
     </el-form>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
+import http from "@/api/public";
 
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (value.length > 20) {
-        callback(new Error("Please enter the correct user name"));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
-      } else {
-        callback();
-      }
-    };
     return {
       loginForm: {
         username: "",
@@ -84,12 +110,17 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername },
+          { required: true, trigger: "blur", message: "不能为空" },
+          { max: 20, message: "长度不能超过20个字符", trigger: "blur" },
         ],
+        studentNo: [{ required: true, trigger: "blur", message: "不能为空" }],
+        nickname: [{ required: true, trigger: "blur", message: "不能为空" }],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword },
+          { required: true, trigger: "blur", message: "不能为空" },
+          { min: 6, message: "密码最少6位数", trigger: "blur" },
         ],
       },
+      register: false,
       loading: false,
       passwordType: "password",
       redirect: undefined,
@@ -118,28 +149,42 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then((res) => {
-              console.log(res);
-              if (res.success) {
-                window.localStorage.setItem("user", JSON.stringify(res.data.user));
-                this.$store.commit("user/SET_NAME",res.data.user.username)
-                this.$store.commit("user/SET_CLASSID",res.data.user.classId)
-                this.$store.commit("user/SET_ISADMIN",res.data.user.type == 1)
-                this.$message.success("登陆成功");
-                this.$router.push({ path: this.redirect || "/" });
+          if (this.register == true) {
+            this.$store.dispatch("user/register", this.loginForm).then((result) => {
+            if (result.success) {
+                this.$message.success("注册成功");
+                this.register = false
               } else {
-                this.$message.error(res.message);
+                this.$message.error(result.message);
               }
+              this.loading = false;
+             }).catch((error) => {
+               this.loading = false;
+             });
+          } else {
+            this.loginForm.studentNo = null;
+            this.loginForm.nickname = null;
+            this.$store
+              .dispatch("user/login", this.loginForm)
+              .then((res) => {
+                console.log(res);
+                if (res.success) {
+                  let user = res.data.user;
+                  window.localStorage.setItem("user", JSON.stringify(user));
+                  this.$store.commit("user/SET_NAME", res.data.user.username);
+                  this.$message.success("登陆成功");
+                  this.$router.push({ path: this.redirect || "/" });
+                } else {
+                  this.$message.error(res.message);
+                }
 
-              this.loading = false;
-            })
-            .catch((err) => {
-              this.loading = false;
-            });
+                this.loading = false;
+              })
+              .catch((err) => {
+                this.loading = false;
+              });
+          }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

@@ -7,12 +7,13 @@ const apiUrl = systemConfig.apiUrl;
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
     name: "",
     avatar: "https://ikaros-picture.oss-cn-shenzhen.aliyuncs.com/typora/Ikaros/timg.jpg",
     isAdmin: false,
+    isClassAdmin: false,
     classId: "",
-    routes: []
+    routes: [],
+    roles: window.localStorage.getItem("user") && JSON.parse(window.localStorage.getItem("user")).roles
   };
 };
 
@@ -21,9 +22,6 @@ const state = getDefaultState();
 const mutations = {
   RESET_STATE: state => {
     Object.assign(state, getDefaultState());
-  },
-  SET_TOKEN: (state, token) => {
-    state.token = token;
   },
   SET_NAME: (state, name) => {
     state.name = name;
@@ -34,11 +32,17 @@ const mutations = {
   SET_ISADMIN: (state, isAdmin) => {
     state.isAdmin = isAdmin;
   },
+  SET_ISCLASSADMIN: (state, isClassAdmin) => {
+    state.isClassAdmin = isClassAdmin;
+  },
   SET_CLASSID: (state, classId) => {
     state.classId = classId;
   },
   SET_ROUTES: (state, routes) => {
     state.routes = routes;
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 };
 
@@ -46,6 +50,16 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return http.requestPost(apiUrl + "/user/login", userInfo);
+  },
+  register({ commit }, userInfo) {
+    return http.requestPost(apiUrl + "/user", userInfo);
+  },
+
+  setUserInfo({commit, state}, user){
+    commit("SET_ROLES", user.roles);
+    commit("SET_CLASSID", user.classId);
+    commit("SET_ISADMIN", user.type == 1);
+    commit("SET_ISCLASSADMIN", user.roles.indexOf('classAdmin') > -1);
   },
 
   // get user info
@@ -72,15 +86,6 @@ const actions = {
   logout({ commit, state }) {
     return http.requestQuickGet(apiUrl + "/user/logout");
   },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      removeToken(); // must remove  token  first
-      commit("RESET_STATE");
-      resolve();
-    });
-  }
 };
 
 export default {

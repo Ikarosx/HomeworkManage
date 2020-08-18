@@ -3,26 +3,25 @@ import { systemConfig } from "@/../config/system";
 
 const apiUrl = systemConfig.apiUrl;
 
-export const listAllManageClass = () => {
-  return http.requestGet(apiUrl + "/manageClass/list/all");
+export const insertHomework = params => {
+  return http.requestPost(apiUrl + "/manageHomework", params);
 };
 
-export const insertManageClass = param => {
-  return http.requestPost(apiUrl + "/manageClass", param);
+export const listHomeworks = () => {
+  return http.requestQuickGet(apiUrl + "/manageHomework/current/list/all");
 };
 
-export const getManageClassDetailInfo = id => {
-  return http.requestGet(apiUrl + "/manageClass/" + id + "/detail");
+export const updateHomework = params => {
+  return http.requestPut(apiUrl + "/manageHomework/" + params.id, params);
 };
 
-export const deleteManageClassUser = id => {
-  return http.requestDelete(apiUrl + "/manageClassUser/" + id);
+export const deleteHomework = id => {
+  return http.requestDelete(apiUrl + "/manageHomework/" + id);
 };
 
-export const insertManageClassUser = params => {
-  return http.requestPost(apiUrl + "/manageClassUser", params);
+export const insertManageHomeworkUser = params => {
+  return http.requestPost(apiUrl + "/manageHomeworkUser", params);
 };
-
-export const deleteClass = id => {
-  return http.requestDelete(apiUrl + "/manageClass/" + id);
-}
+export const updateManageHomeworkUser = params => {
+  return http.requestPut(apiUrl + "/manageHomeworkUser/" + params.id, params);
+};

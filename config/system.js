@@ -22,13 +22,14 @@ export const filters = {
     };
     return statusMap[role];
   },
-  schoolStateFilter(state) {
+  homeworkStateFilter(state) {
     const statusMap = {
-      0: "success",
-      1: "danger"
+      0: "danger",
+      1: "success"
     };
     return statusMap[state];
   },
+  
   schoolSystemFilter(systemType) {
     const map = {
       1: "正方",

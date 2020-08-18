@@ -48,9 +48,7 @@
           <el-row>
             <el-table :data="manageClassDetailInfo.members" stripe style="width: 100%">
               <el-table-column prop="id" label="ID"></el-table-column>
-              <el-table-column prop="studentNo" label="学号"></el-table-column>
               <el-table-column prop="nickname" label="姓名"></el-table-column>
-              <el-table-column prop="createTime" label="加入时间"></el-table-column>
             </el-table>
           </el-row>
         </el-card>
@@ -92,11 +90,14 @@ export default {
       this.$alert("你目前没有加入任何班级，请创建/加入一个班级", "提示", {
       confirmButtonText: "确定",
       callback: (action) => {
+        
       },
     });
     }
   },
   mounted() {
+
+    
   },
   methods: {
     deleteClass() {
@@ -123,7 +124,9 @@ export default {
         .insertManageClassUser(joinClassParam)
         .then((result) => {
           if (result.success) {
-            this.$message.success("已经申请加入班级");
+            this.user.classId = row.id;
+            window.localStorage.setItem("user", JSON.stringify(this.user));
+            this.$message.success("加入班级成功");
           } else {
             this.$message.error(result.message);
           }
@@ -150,10 +153,6 @@ export default {
         .then((result) => {
           if (result.success) {
             this.manageClassDetailInfo = result.data.manageClassDetailInfo;
-            // if (this.manageClassDetailInfo.adminUser.id === this.user.id) {
-            //   this.user.roles.push("classAdmin");
-            //   window.localStorage.setItem("user", JSON.stringify(this.user));
-            // }
           } else {
             this.$message.error(result.message);
           }
