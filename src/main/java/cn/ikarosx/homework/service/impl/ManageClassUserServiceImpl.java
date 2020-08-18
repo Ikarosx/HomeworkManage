@@ -17,7 +17,6 @@ import cn.ikarosx.homework.service.ManageClassService;
 import cn.ikarosx.homework.service.ManageClassUserService;
 import cn.ikarosx.homework.util.SessionUtils;
 import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +62,12 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
   }
 
   @Override
-  public ResponseResult getManageClassUserById(String id) {
-    Optional<ManageClassUser> optional = manageClassUserRepository.findById(id);
-    ManageClassUser manageClassUser = optional.orElse(null);
-    if (manageClassUser == null) {
-      ExceptionCast.cast(CommonCodeEnum.DATA_NOT_FOUND);
-    }
-    return CommonCodeEnum.SUCCESS.addData("manageClassUser", manageClassUser);
+  public ManageClassUser getManageClassUserById(String id) {
+    ManageClassUser manageClassUser =
+        manageClassUserRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    return manageClassUser;
   }
 
   @Override
@@ -106,14 +104,14 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
   }
 
   /**
-   * 根据传入的对象返回数据库是否存在
+   * 根据传入的对象查询数据
    *
    * @param manageClassUser
    * @return
    */
   @Override
-  public boolean getByManageClassUser(ManageClassUser manageClassUser) {
-    return manageClassUserRepository.findOne(Example.of(manageClassUser)).orElse(null) != null;
+  public ManageClassUser getByManageClassUser(ManageClassUser manageClassUser) {
+    return manageClassUserRepository.findOne(Example.of(manageClassUser)).orElse(null);
   }
 
   /** 管理员处理申请 */
@@ -147,6 +145,12 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
       // 删除申请记录
       manageClassUserRepository.delete(manageClassUser);
       ExceptionCast.cast(ClassCodeEnum.AGREE_ERROR);
+    }
+    // 拒绝也直接删除记录
+    if (manageClassUserUpdateParam
+        .getStatus()
+        .equals(ManageClassUserStatusEnum.Rejected.getStatus())) {
+      manageClassUserRepository.delete(manageClassUser);
     }
     manageClassUser.setStatus(manageClassUserUpdateParam.getStatus());
     manageClassUserRepository.save(manageClassUser);

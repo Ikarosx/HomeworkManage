@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
         userRepository
             .findById(id)
             .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
+    SessionUtils.setAttribute("user", user);
     return CommonCodeEnum.SUCCESS.addData("user", user);
   }
 

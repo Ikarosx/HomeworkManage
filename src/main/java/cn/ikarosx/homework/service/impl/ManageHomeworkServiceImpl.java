@@ -3,6 +3,7 @@ package cn.ikarosx.homework.service.impl;
 import cn.ikarosx.homework.entity.ManageHomework;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.CustomException;
+import cn.ikarosx.homework.model.BO.HomeworkFinishInfo;
 import cn.ikarosx.homework.model.BO.ManageHomeworkDetails;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkQueryParam;
 import cn.ikarosx.homework.repository.ManageHomeworkRepository;
@@ -139,6 +140,13 @@ public class ManageHomeworkServiceImpl implements ManageHomeworkService {
                   return o1Between.compareTo(o2Between);
                 })
             .collect(Collectors.toList());
+    return list;
+  }
+
+  @Override
+  public List<HomeworkFinishInfo> getHomeworkFinishInfo(String classId, String homeworkId) {
+    List<HomeworkFinishInfo> list =
+        manageHomeworkRepository.getHomeworkFinishInfo(classId, homeworkId);
     return list;
   }
 }

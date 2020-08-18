@@ -4,16 +4,21 @@ import cn.ikarosx.homework.aspect.NeedAdmin;
 import cn.ikarosx.homework.aspect.PreAuthorize;
 import cn.ikarosx.homework.entity.ManageHomework;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
+import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
+import cn.ikarosx.homework.model.BO.HomeworkFinishInfo;
 import cn.ikarosx.homework.model.BO.ManageHomeworkDetails;
+import cn.ikarosx.homework.model.excel.HomeworkFinishInfoExcelModel;
 import cn.ikarosx.homework.model.param.insert.ManageHomeworkInsertParam;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkQueryParam;
 import cn.ikarosx.homework.model.param.update.ManageHomeworkUpdateParam;
 import cn.ikarosx.homework.service.ManageHomeworkService;
+import cn.ikarosx.homework.util.ExcelUtils;
 import cn.ikarosx.homework.util.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +31,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 /**
  * @author Ikarosx
  * @date 2020/08/17 14:16
@@ -123,5 +132,52 @@ public class ManageHomeworkController {
   public ResponseResult listAllManageHomeworksByCurrentUser() {
     List<ManageHomeworkDetails> list = manageHomeworkService.listAllManageHomeworksByCurrentUser();
     return CommonCodeEnum.SUCCESS.addData("list", list, "total", list.size());
+  }
+
+  @GetMapping("/{id}/finishinfo")
+  @ApiOperation(value = "查询某个作业的完成情况", notes = "只有班级成员可以查看")
+  public ResponseResult getHomeworkFinishInfo(
+      @PathVariable String id, @RequestParam String classId) {
+    // 只有班级成员可以查看
+    if (!StringUtils.equals(classId, SessionUtils.getClassId())) {
+      return CommonCodeEnum.PERMISSION_DENY;
+    }
+    List<HomeworkFinishInfo> list = manageHomeworkService.getHomeworkFinishInfo(classId, id);
+    return CommonCodeEnum.SUCCESS.addData("list", list, "total", list.size());
+  }
+
+  @GetMapping("/{id}/finishinfo/download")
+  @ApiOperation(value = "下载某个作业的完成情况", notes = "只有班级成员可以下载")
+  public void downloadHomeworkFinishInfo(@PathVariable String id, @RequestParam String classId) {
+    // 只有班级成员可以下载
+    if (!StringUtils.equals(classId, SessionUtils.getClassId())) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    List<HomeworkFinishInfo> homeworkFinishInfos =
+        manageHomeworkService.getHomeworkFinishInfo(classId, id);
+    List<HomeworkFinishInfoExcelModel> datas =
+        homeworkFinishInfos
+            .parallelStream()
+            .map(
+                homeworkFinishInfo -> {
+                  HomeworkFinishInfoExcelModel homeworkFinishInfoExcelModel =
+                      new HomeworkFinishInfoExcelModel();
+                  BeanUtils.copyProperties(homeworkFinishInfo, homeworkFinishInfoExcelModel);
+                  Integer status = homeworkFinishInfo.getStatus();
+                  if (status != null && status.equals(1)) {
+                    homeworkFinishInfoExcelModel.setStatus("是");
+                  } else {
+                    homeworkFinishInfoExcelModel.setStatus("否");
+                  }
+                  return homeworkFinishInfoExcelModel;
+                })
+            .collect(Collectors.toList());
+    ServletRequestAttributes requestAttributes =
+        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    ExcelUtils.exportExcel(
+        requestAttributes.getResponse(),
+        "excel/HomeworkFinishInfoTemplate.xlsx",
+        HomeworkFinishInfoExcelModel.class,
+        datas);
   }
 }

@@ -117,16 +117,16 @@ public class ManageClassServiceImpl implements ManageClassService {
 
   @Override
   public List<ManageClassDetailInfoUser> listAllManageClassUser(String classId, Integer status) {
-    ManageClass manageClass =
-        manageClassRepository
-            .findById(classId)
-            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
     // 必须同班才能查询
     if (!StringUtils.equals(SessionUtils.getClassId(), classId)) {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }
+    ManageClass manageClass =
+        manageClassRepository
+            .findById(classId)
+            .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
     // 如果要查询除了通过以外的的，必须是管理员
-    if (ManageClassUserStatusEnum.Joined.getStatus().equals(status)
+    if (!ManageClassUserStatusEnum.Joined.getStatus().equals(status)
         && !StringUtils.equals(manageClass.getAdminUserId(), SessionUtils.getId())) {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }

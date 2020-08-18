@@ -55,13 +55,22 @@ public class ManageClassUserController {
     }
     ManageClassUser manageClassUser = new ManageClassUser();
     manageClassUser.setUserId(SessionUtils.getId());
-    // 申请加入，状态为等待
-    manageClassUser.setStatus(ManageClassUserStatusEnum.Waiting.getStatus());
-    // 判断是否已经申请过了
-    boolean flag = manageClassUserService.getByManageClassUser(manageClassUser);
-    if (flag) {
+    manageClassUser = manageClassUserService.getByManageClassUser(manageClassUser);
+    // 如果查询不到，需要初始化一下
+    if (manageClassUser == null) {
+      manageClassUser = new ManageClassUser();
+      manageClassUser.setUserId(SessionUtils.getId());
+    }
+    // 已经为班级成员
+    if (ManageClassUserStatusEnum.Joined.getStatus().equals(manageClassUser.getStatus())) {
+      return ClassCodeEnum.CLASS_MEMBER_CAN_NOT_CREATE_CLASS;
+    }
+    // 已经申请加入班级
+    if (ManageClassUserStatusEnum.Waiting.getStatus().equals(manageClassUser.getStatus())) {
       return ClassCodeEnum.WAITING_ADMIN_AGREE;
     }
+    // 申请加入，设置状态为等待
+    manageClassUser.setStatus(ManageClassUserStatusEnum.Waiting.getStatus());
     manageClassUser.setClassId(manageClassUserInsertParam.getClassId());
     manageClassUserService.insertManageClassUser(manageClassUser);
     return CommonCodeEnum.SUCCESS.clearData();
@@ -72,7 +81,6 @@ public class ManageClassUserController {
   @Transactional
   public ResponseResult deleteManageClassUserByUserId(@PathVariable String id) {
     // 班级管理员可以踢成员 TODO
-    // 被拒绝也直接删除 TODO
     // 自己可以退出
     // 管理员可以操作任何人
     if (!StringUtils.equals(id, SessionUtils.getId()) && !SessionUtils.isAdmin()) {
@@ -97,7 +105,8 @@ public class ManageClassUserController {
   @GetMapping("/{id}")
   @ApiOperation(value = "通过ID查询班级-成员")
   public ResponseResult getManageClassUserById(@PathVariable String id) {
-    return manageClassUserService.getManageClassUserById(id);
+    ManageClassUser manageClassUser = manageClassUserService.getManageClassUserById(id);
+    return CommonCodeEnum.SUCCESS.addData("manageClassUser", manageClassUser);
   }
 
   @GetMapping("/list/{page}/{size}")

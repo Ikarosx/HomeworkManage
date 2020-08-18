@@ -16,7 +16,7 @@ public interface ManageClassUserService {
 
   ResponseResult updateManageClassUser(ManageClassUserUpdateParam manageClassUserUpdateParam);
 
-  ResponseResult getManageClassUserById(String id);
+  ManageClassUser getManageClassUserById(String id);
 
   ResponseResult listManageClassUsersByPage(
       int page, int size, ManageClassUserQueryParam manageClassUserQueryParam);
@@ -25,7 +25,7 @@ public interface ManageClassUserService {
 
   void deleteManageClassUserByClassId(String id);
 
-  boolean getByManageClassUser(ManageClassUser manageClassUser);
+  ManageClassUser getByManageClassUser(ManageClassUser manageClassUser);
 
   void dealApply(ManageClassUserUpdateParam manageClassUserUpdateParam);
 }

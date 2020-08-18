@@ -2,6 +2,7 @@
 package cn.ikarosx.homework.service;
 
 import cn.ikarosx.homework.entity.ManageHomework;
+import cn.ikarosx.homework.model.BO.HomeworkFinishInfo;
 import cn.ikarosx.homework.model.BO.ManageHomeworkDetails;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkQueryParam;
 import java.util.List;
@@ -28,5 +29,7 @@ public interface ManageHomeworkService {
   boolean hasPermissionOnHomeworkByHomeworkId(String homeworkId);
 
   List<ManageHomeworkDetails> listAllManageHomeworksByCurrentUser();
+
+    List<HomeworkFinishInfo> getHomeworkFinishInfo(String classId, String homeworkId);
 }
     

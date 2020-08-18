@@ -33,10 +33,6 @@ public class OwnerAspect {
     Signature signature = joinPoint.getSignature();
     MethodSignature methodSignature = (MethodSignature) signature;
     Method method = methodSignature.getMethod();
-    // 如果当前登录用户是管理员，直接放行
-    if (SessionUtils.isAdmin()) {
-      return;
-    }
     // 拿到IsOwner注解
     IsOwner isOwner = method.getAnnotation(IsOwner.class);
     // 拿到要校验参数的位置
