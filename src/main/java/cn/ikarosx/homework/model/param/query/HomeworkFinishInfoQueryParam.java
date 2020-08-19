@@ -12,4 +12,12 @@ import lombok.Data;
 @ApiModel("查询作业完成情况参数")
 public class HomeworkFinishInfoQueryParam {
   @NotBlank private String classId;
+
+  public String getClassId() {
+    return classId;
+  }
+
+  public void setClassId(String classId) {
+    this.classId = classId;
+  }
 }

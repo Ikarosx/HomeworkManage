@@ -31,4 +31,36 @@ public class HomeworkFinishInfo {
     this.status = status;
     this.createTime = createTime;
   }
+
+  public String getNickname() {
+    return nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
+  public String getStudentNo() {
+    return studentNo;
+  }
+
+  public void setStudentNo(String studentNo) {
+    this.studentNo = studentNo;
+  }
+
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
 }

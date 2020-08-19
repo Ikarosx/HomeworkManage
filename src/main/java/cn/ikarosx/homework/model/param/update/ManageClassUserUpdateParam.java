@@ -14,4 +14,28 @@ public class ManageClassUserUpdateParam {
   @NotNull private String userId;
   @NotNull private String classId;
   @NotNull private Integer status;
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public String getClassId() {
+    return classId;
+  }
+
+  public void setClassId(String classId) {
+    this.classId = classId;
+  }
+
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
 }

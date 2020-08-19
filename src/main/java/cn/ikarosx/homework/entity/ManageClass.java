@@ -19,7 +19,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * @author Ikarosx
  * @date 2020-08-15 01:42:01
  */
-@Data
 @Entity
 @Table(name = "manage_class")
 @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -45,4 +44,44 @@ public class ManageClass implements Serializable {
   @LastModifiedDate
   @ApiModelProperty(value = "修改时间", hidden = true)
   private Date updateTime;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getAdminUserId() {
+    return adminUserId;
+  }
+
+  public void setAdminUserId(String adminUserId) {
+    this.adminUserId = adminUserId;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
+  public Date getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(Date updateTime) {
+    this.updateTime = updateTime;
+  }
 }

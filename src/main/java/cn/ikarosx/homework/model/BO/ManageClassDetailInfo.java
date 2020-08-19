@@ -21,4 +21,60 @@ public class ManageClassDetailInfo {
   private Date updateTime;
   // 班级同学
   private List<ManageClassDetailInfoUser> members;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Integer getNum() {
+    return num;
+  }
+
+  public void setNum(Integer num) {
+    this.num = num;
+  }
+
+  public ManageClassDetailInfoUser getAdminUser() {
+    return adminUser;
+  }
+
+  public void setAdminUser(ManageClassDetailInfoUser adminUser) {
+    this.adminUser = adminUser;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
+  public Date getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(Date updateTime) {
+    this.updateTime = updateTime;
+  }
+
+  public List<ManageClassDetailInfoUser> getMembers() {
+    return members;
+  }
+
+  public void setMembers(List<ManageClassDetailInfoUser> members) {
+    this.members = members;
+  }
 }

@@ -22,4 +22,36 @@ public class HomeworkFinishInfoExcelModel {
 
   @ExcelAnnotation(columnName = "完成时间")
   private Date createTime;
+
+  public String getStudentNo() {
+    return studentNo;
+  }
+
+  public void setStudentNo(String studentNo) {
+    this.studentNo = studentNo;
+  }
+
+  public String getNickname() {
+    return nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
 }

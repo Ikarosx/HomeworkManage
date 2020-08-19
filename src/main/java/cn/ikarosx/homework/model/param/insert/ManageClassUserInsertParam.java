@@ -12,4 +12,12 @@ import lombok.Data;
 @ApiModel(value = "班级-成员Insert参数")
 public class ManageClassUserInsertParam {
   @NotNull private String classId;
+
+  public String getClassId() {
+    return classId;
+  }
+
+  public void setClassId(String classId) {
+    this.classId = classId;
+  }
 }

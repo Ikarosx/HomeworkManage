@@ -19,4 +19,20 @@ public class ManageHomeworkUserInsertParam {
   @NotNull
   @ApiModelProperty(value = "内容")
   private String content;
+
+  public String getHomeworkId() {
+    return homeworkId;
+  }
+
+  public void setHomeworkId(String homeworkId) {
+    this.homeworkId = homeworkId;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
 }
