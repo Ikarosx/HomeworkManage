@@ -2,8 +2,10 @@ package cn.ikarosx.homework.service.impl;
 
 import cn.ikarosx.homework.entity.ManageClass;
 import cn.ikarosx.homework.entity.User;
+import cn.ikarosx.homework.exception.ClassCodeEnum;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.CustomException;
+import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.model.param.query.UserQueryParam;
 import cn.ikarosx.homework.model.param.update.UserUpdateParam;
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public String insertUser(User user) {
+    User existUser = userRepository.findByUsername(user.getUsername());
+    // 如果用户名已经存在
+    if (existUser != null) {
+      ExceptionCast.cast(ClassCodeEnum.USER_NAME_EXIST_ERROR);
+    }
     user.setType(0);
     userRepository.save(user);
     return user.getId();

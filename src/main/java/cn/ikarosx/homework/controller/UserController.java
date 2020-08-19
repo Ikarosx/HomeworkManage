@@ -45,7 +45,6 @@ public class UserController {
     userInsertParam.setPassword(BCrypt.hashpw(userInsertParam.getPassword(), BCrypt.gensalt()));
     User user = new User();
     BeanUtils.copyProperties(userInsertParam, user);
-    user.setType(0);
     String userId = userService.insertUser(user);
     return CommonCodeEnum.SUCCESS.clearData().addData("userId", userId);
   }

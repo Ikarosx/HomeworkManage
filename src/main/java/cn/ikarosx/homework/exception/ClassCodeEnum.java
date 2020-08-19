@@ -17,7 +17,8 @@ public enum ClassCodeEnum implements ResponseResult {
   CLASS_MEMBER_CAN_NOT_JSON_CLASS(false, 12003, "你已经加入了一个班级，无法加入另一个"),
   CLASS_NOT_FOUNT_ERROR(false, 12004, "班级不存在"),
   WAITING_ADMIN_AGREE(false, 12005, "你已经申请加入班级，请等待管理员同意"),
-  AGREE_ERROR(false, 12006, "该成员已经加入其他班级");
+  AGREE_ERROR(false, 12006, "该成员已经加入其他班级"),
+  USER_NAME_EXIST_ERROR(false, 12007, "用户名已存在");
 
   private boolean success;
   private int code;
