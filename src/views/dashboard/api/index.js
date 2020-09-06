@@ -12,7 +12,7 @@ export const insertManageClass = param => {
 };
 
 export const getManageClassDetailInfo = id => {
-  return http.requestGet(apiUrl + "/manageClass/" + id + "/detail");
+  return http.requestGet(apiUrl + "/manageClass/" + id + "/detail?status=0");
 };
 
 export const deleteManageClassUser = id => {
@@ -25,4 +25,8 @@ export const insertManageClassUser = params => {
 
 export const deleteClass = id => {
   return http.requestDelete(apiUrl + "/manageClass/" + id);
+}
+
+export const getUserById = id => {
+  return http.requestQuickGet(apiUrl + "/user/" + id);
 }

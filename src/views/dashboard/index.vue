@@ -88,16 +88,32 @@ export default {
     if (this.user.classId !== null && this.user.classId !== "") {
       this.getManageClassDetailInfo(this.user.classId);
     } else {
-      this.listAllManageClass();
-      this.$alert("你目前没有加入任何班级，请创建/加入一个班级", "提示", {
-      confirmButtonText: "确定",
-      callback: (action) => {
-      },
-    });
+      // 判断是否加入了班级
+      manageClassApi
+        .getUserById(this.user.id)
+        .then((result) => {
+          if (result.success) {
+            // 如果已经更新了班级
+            if (result.data.user.classId != null) {
+              this.user = result.data.user;
+              window.localStorage.setItem("user", JSON.stringify(result.data.user));
+              location.reload();
+            }
+          } else {
+            this.$message.error(result.message);
+          }
+          this.listAllManageClass();
+          this.$alert("你目前没有加入任何班级，请创建/加入一个班级", "提示", {
+            confirmButtonText: "确定",
+            callback: (action) => {},
+          });
+        })
+        .catch((error) => {
+          this.$message.error(error.message);
+        });
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     deleteClass() {
       manageClassApi
@@ -106,8 +122,12 @@ export default {
           if (result.success) {
             this.user.classId = "";
             window.localStorage.setItem("user", JSON.stringify(this.user));
-            this.$message.success("解散班级成功，好聚好散");
-            this.listAllManageClass();
+            this.$message.success("解散班级成功，好聚好散，等待两秒刷新");
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+
+            // this.listAllManageClass();
           } else {
             this.$message.error(result.message);
           }
@@ -135,9 +155,12 @@ export default {
         .deleteManageClassUser(this.user.id)
         .then((result) => {
           if (result.success) {
-            this.user.classId = "";
-            window.localStorage.setItem("user", JSON.stringify(this.user));
-            this.$message.success("退出班级成功");
+            this.$message.success("退出班级成功，请等待两秒刷新");
+            setTimeout(() => {
+              this.user.classId = "";
+              window.localStorage.setItem("user", JSON.stringify(this.user));
+              location.reload();
+            }, 2000);
           } else {
             this.$message.error(result.message);
           }
@@ -177,10 +200,14 @@ export default {
         .insertManageClass(this.manageClass)
         .then((result) => {
           if (result.success) {
-            this.$message.success("创建班级成功");
-            this.user.classId = result.data.classId;
-            window.localStorage.setItem("user", JSON.stringify(this.user));
-            this.getManageClassDetailInfo(this.user.classId);
+            this.$message.success("创建班级成功，请等待两秒刷新");
+            // 刷新路由
+            setTimeout(() => {
+              this.user.classId = result.data.classId;
+              window.localStorage.setItem("user", JSON.stringify(this.user));
+              location.reload();
+            }, 2000);
+            // this.getManageClassDetailInfo(this.user.classId);
           } else {
             this.$message.error(result.message);
           }

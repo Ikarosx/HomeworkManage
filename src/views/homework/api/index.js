@@ -25,3 +25,22 @@ export const insertManageHomeworkUser = params => {
 export const updateManageHomeworkUser = params => {
   return http.requestPut(apiUrl + "/manageHomeworkUser/" + params.id, params);
 };
+
+export const getHomeworkFinishInfo = params => {
+  return http.requestGet(
+    apiUrl +
+      "/manageHomework/" +
+      params.homeworkId +
+      "/finishinfo?classId=" +
+      params.classId
+  );
+};
+export const downloadHomeworkFinishInfos = params => {
+  window.open(
+    apiUrl +
+      "/manageHomework/" +
+      params.id +
+      "/finishinfo/download?classId=" +
+      params.classId
+  );
+};

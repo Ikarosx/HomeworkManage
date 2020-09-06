@@ -2,7 +2,7 @@ require("es6-promise").polyfill();
 import axios from "axios";
 import { Message } from "element-ui"
 axios.defaults.withCredentials = true; //跨域
-axios.defaults.crossDomain = true; //跨域
+// axios.defaults.crossDomain = true; //跨域
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";

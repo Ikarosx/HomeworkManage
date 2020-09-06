@@ -17,11 +17,11 @@ export default {
       component: () => import("@/views/homework/add"),
       meta: { title: "添加作业", icon: "add", role:['admin', 'classAdmin'] }
     },
-    {
-      path: "count",
-      name: "homeworkCount",
-      component: () => import("@/views/homework/count"),
-      meta: { title: "统计作业", icon: "count" }
-    }
+    // {
+    //   path: "count",
+    //   name: "homeworkCount",
+    //   component: () => import("@/views/homework/count"),
+    //   meta: { title: "统计作业", icon: "count" }
+    // }
   ]
 };

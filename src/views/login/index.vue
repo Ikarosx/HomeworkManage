@@ -107,6 +107,8 @@ export default {
       loginForm: {
         username: "",
         password: "",
+        studentNo:"",
+        nickname:""
       },
       loginRules: {
         username: [

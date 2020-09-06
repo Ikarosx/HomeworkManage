@@ -57,6 +57,7 @@ const actions = {
 
   setUserInfo({commit, state}, user){
     commit("SET_ROLES", user.roles);
+    commit("SET_NAME", user.nickname);
     commit("SET_CLASSID", user.classId);
     commit("SET_ISADMIN", user.type == 1);
     commit("SET_ISCLASSADMIN", user.roles.indexOf('classAdmin') > -1);

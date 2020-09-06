@@ -40,7 +40,9 @@
           </el-table-column>
           <el-table-column label="状态" align="center">
             <template slot-scope="scope">
-              <el-tag :type="scope.row.finish === true ? 'success':new Date(scope.row.deadline) < new Date()?'warning' : 'danger'">
+              <el-tag
+                :type="scope.row.finish === true ? 'success':new Date(scope.row.deadline) < new Date()?'warning' : 'danger'"
+              >
                 {{
                 scope.row.finish ? "已完成" : new Date(scope.row.deadline) < new Date() ? "已超时" : "未完成"
                 }}
@@ -58,6 +60,14 @@
                 @click="handleSubmit(scope.$index, scope.row)"
               />
               <el-button
+                type="info"
+                circle
+                size="mini"
+                icon="el-icon-s-data"
+                v-if="isAdmin || isClassAdmin"
+                @click="handleCollect(scope.$index, scope.row)"
+              />
+              <el-button
                 type="primary"
                 circle
                 size="mini"
@@ -73,18 +83,6 @@
                 v-show="isAdmin || isClassAdmin"
                 @click="clickDelete(scope.row.id)"
               />
-              <!-- <el-button
-            class="hidden-md-and-down"
-            size="mini"
-            type="primary"
-            @click="handleEdit(scope.$index, scope.row)"
-          >编辑</el-button>
-          <el-button
-            class="hidden-md-and-down"
-            size="mini"
-            type="danger"
-            @click="clickDelete(scope.row.id)"
-              >删除</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -95,6 +93,9 @@
       <el-dialog title="提交作业" :visible.sync="submitDialog">
         <submit-homework :homeworkId="submitHomeworkId" @submitHomeworkOk="submitHomeworkOk" />
       </el-dialog>
+      <el-dialog title="查看作业提交情况" :visible.sync="homeworkInfoDialog">
+        <homework-info :homeworkFinishInfos="homeworkFinishInfos" :homeworkId="homeworkId"/>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -104,13 +105,15 @@ import { mapGetters } from "vuex";
 import * as homeworkApi from "./api";
 import EditHomework from "./add";
 import SubmitHomework from "./components/SubmitHomework";
+import HomeworkInfo from "./components/HomeworkInfo";
 export default {
   components: {
     "edit-homework": EditHomework,
     SubmitHomework,
+    HomeworkInfo,
   },
   computed: {
-    ...mapGetters(["isClassAdmin", "isAdmin"]),
+    ...mapGetters(["isClassAdmin", "isAdmin","classId"]),
   },
   filters: filters,
   created() {
@@ -140,10 +143,32 @@ export default {
       editHomework: {},
       submitDialog: false,
       editDialog: false,
+      homeworkInfoDialog: false,
       submitHomeworkId: "",
+      homeworkFinishInfos:{},
+      homeworkId: ""
     };
   },
   methods: {
+    handleCollect(index, row) {
+      let params = {
+        homeworkId: row.id,
+        classId: this.classId,
+      };
+      this.homeworkId = row.id;
+      homeworkApi
+        .getHomeworkFinishInfo(params)
+        .then((result) => {
+          if (result.success) {
+            this.homeworkFinishInfos = result.data.list;
+            this.homeworkInfoDialog = true;
+          } else {
+            this.$message.error(result.message);
+          }
+        })
+        .catch((error) => {
+        });
+    },
     submitHomeworkOk() {
       // 提交成功之后关闭窗口
       this.submitDialog = false;
@@ -181,7 +206,8 @@ export default {
         .deleteHomework(index)
         .then((result) => {
           if (result.success) {
-            this.$message.success(删除成功);
+            this.$message.success('删除成功');
+            this.loadData();
           } else {
             this.$message.error(result.message);
           }
