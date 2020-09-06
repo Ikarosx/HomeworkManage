@@ -151,6 +151,7 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
         .getStatus()
         .equals(ManageClassUserStatusEnum.Rejected.getStatus())) {
       manageClassUserRepository.delete(manageClassUser);
+      return;
     }
     manageClassUser.setStatus(manageClassUserUpdateParam.getStatus());
     manageClassUserRepository.save(manageClassUser);
