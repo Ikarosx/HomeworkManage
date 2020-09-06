@@ -16,7 +16,7 @@ public interface ManageHomeworkRepository extends JpaRepository<ManageHomework, 
 
   @Query(
       "SELECT c.adminUserId FROM ManageClass c LEFT JOIN ManageHomework h ON h.classId = c.id WHERE h.id = :homeworkId")
-  String getAdminUserIdByHomeworkId(String homeworkId);
+  String getAdminUserIdByHomeworkId(@Param("homeworkId") String homeworkId);
 
   @Query(
       "SELECT new cn.ikarosx.homework.model.BO.ManageHomeworkDetails(h.id, h.title, h.description, h.deadline, CASE hu.status WHEN 1 then true ELSE false END, h.createTime, h.updateTime) FROM ManageHomework h LEFT JOIN ManageHomeworkUser hu ON hu.homeworkId = h.id AND hu.userId = :id WHERE h.classId = :classId")
