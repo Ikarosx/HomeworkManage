@@ -146,13 +146,13 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
       manageClassUserRepository.delete(manageClassUser);
       ExceptionCast.cast(ClassCodeEnum.AGREE_ERROR);
     }
-    // 拒绝也直接删除记录
-    if (manageClassUserUpdateParam
+    // 拒绝把状态设置为拒绝
+    /*if (manageClassUserUpdateParam
         .getStatus()
         .equals(ManageClassUserStatusEnum.Rejected.getStatus())) {
-      manageClassUserRepository.delete(manageClassUser);
-      return;
-    }
+            manageClassUserRepository.delete(manageClassUser);
+            return;
+    }*/
     manageClassUser.setStatus(manageClassUserUpdateParam.getStatus());
     manageClassUserRepository.save(manageClassUser);
     // 如果是同意申请的话，需要更改用户
