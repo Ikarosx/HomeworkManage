@@ -28,7 +28,8 @@ public enum CommonCodeEnum implements ResponseResult {
   /** 用户相关 11000 */
   USERNAME_OR_PASSWORD_ERROR(false, 11001, "用户名或密码错误"),
   RE_LOGIN(false, 11002, "请重新登陆"),
-  PERMISSION_DENY(false, 11003, "没有操作权限");
+  PERMISSION_DENY(false, 11003, "没有操作权限"),
+  USERNAME_EXISTS_ERROR(false, 11004, "用户名已存在");
   private boolean success;
   private int code;
   private String message;

@@ -167,4 +167,9 @@ public class UserServiceImpl implements UserService {
     user.setClassId(classId);
     userRepository.save(user);
   }
+
+  @Override
+  public User getUserByUserName(String username) {
+    return userRepository.findByUsername(username);
+  }
 }

@@ -42,8 +42,12 @@ public class UserController {
   @PostMapping
   @ApiOperation(value = "新增用户")
   public ResponseResult insertUser(@Validated @RequestBody UserInsertParam userInsertParam) {
+    User user = userService.getUserByUserName(userInsertParam.getUsername());
+    if (user != null) {
+      return CommonCodeEnum.USERNAME_EXISTS_ERROR.clearData();
+    }
     userInsertParam.setPassword(BCrypt.hashpw(userInsertParam.getPassword(), BCrypt.gensalt()));
-    User user = new User();
+    user = new User();
     BeanUtils.copyProperties(userInsertParam, user);
     String userId = userService.insertUser(user);
     return CommonCodeEnum.SUCCESS.clearData().addData("userId", userId);
