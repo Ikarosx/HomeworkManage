@@ -56,7 +56,7 @@ public class ManageHomeworkController {
     ManageHomework manageHomework = new ManageHomework();
     BeanUtils.copyProperties(manageHomeworkInsertParam, manageHomework);
     manageHomeworkService.insertManageHomework(manageHomework);
-    return CommonCodeEnum.SUCCESS.clearData().addData("manageHomeWorkId", manageHomework.getId());
+    return CommonCodeEnum.SUCCESS.addData("manageHomeWorkId", manageHomework.getId());
   }
 
   @DeleteMapping("/{id}")
@@ -65,7 +65,7 @@ public class ManageHomeworkController {
       "@userServiceImpl.isAdmin() || @manageHomeworkServiceImpl.hasPermissionOnHomeworkByHomeworkId(#id)")
   public ResponseResult deleteManageHomeworkById(@PathVariable String id) {
     manageHomeworkService.deleteManageHomeworkById(id);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @PutMapping("/{id}")
@@ -78,7 +78,7 @@ public class ManageHomeworkController {
     ManageHomework manageHomework = new ManageHomework();
     BeanUtils.copyProperties(manageHomeworkUpdateParam, manageHomework);
     manageHomeworkService.updateManageHomework(manageHomework);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @GetMapping("/{id}")
@@ -90,7 +90,7 @@ public class ManageHomeworkController {
         && !StringUtils.equals(manageHomework.getClassId(), SessionUtils.getClassId())) {
       return CommonCodeEnum.PERMISSION_DENY;
     }
-    return CommonCodeEnum.SUCCESS.clearData().addData("manageHomework", manageHomework);
+    return CommonCodeEnum.SUCCESS.addData("manageHomework", manageHomework);
   }
 
   //  @GetMapping("/list/{page}/{size}")

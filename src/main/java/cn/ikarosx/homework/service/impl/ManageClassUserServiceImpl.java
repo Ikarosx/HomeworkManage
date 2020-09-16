@@ -49,7 +49,7 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
   @Override
   public ResponseResult deleteManageClassUserByUserId(String id) {
     manageClassUserRepository.deleteAllByUserId(id);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override
@@ -58,7 +58,7 @@ public class ManageClassUserServiceImpl implements ManageClassUserService {
     ManageClassUser manageClassUser = new ManageClassUser();
     BeanUtils.copyProperties(manageClassUserUpdateParam, manageClassUser);
     manageClassUserRepository.save(manageClassUser);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override

@@ -60,7 +60,7 @@ public class ManageClassServiceImpl implements ManageClassService {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }
     manageClassRepository.deleteById(id);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override
@@ -76,7 +76,7 @@ public class ManageClassServiceImpl implements ManageClassService {
     }
     UpdateUtils.copyNullProperties(manageClassUpdateParam, manageClass);
     manageClassRepository.save(manageClass);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override

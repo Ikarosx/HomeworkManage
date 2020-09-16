@@ -73,7 +73,7 @@ public class ManageClassUserController {
     manageClassUser.setStatus(ManageClassUserStatusEnum.Waiting.getStatus());
     manageClassUser.setClassId(manageClassUserInsertParam.getClassId());
     manageClassUserService.insertManageClassUser(manageClassUser);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @DeleteMapping("/{id}")
@@ -91,7 +91,7 @@ public class ManageClassUserController {
     User user = SessionUtils.getUser();
     user.setClassId(null);
     SessionUtils.setAttribute("user", user);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @PostMapping("/deal")
@@ -99,7 +99,7 @@ public class ManageClassUserController {
   public ResponseResult dealApply(
       @Validated @RequestBody ManageClassUserUpdateParam manageClassUserUpdateParam) {
     manageClassUserService.dealApply(manageClassUserUpdateParam);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @GetMapping("/{id}")

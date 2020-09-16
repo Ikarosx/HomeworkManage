@@ -1,6 +1,5 @@
 package cn.ikarosx.homework.exception;
 
-import cn.ikarosx.homework.exception.ResponseResult;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum FileEnums implements ResponseResult {
   /** 相关文件相关 12000 */
-  UPLOAD_FILE_ERROR(true, 12001,"上传文件失败" );
+  UPLOAD_FILE_ERROR(true, 12001, "上传文件失败");
 
   private boolean success;
   private int code;
@@ -45,23 +44,13 @@ public enum FileEnums implements ResponseResult {
     return data;
   }
 
-  public ResponseResult clearData() {
-    data = new HashMap<>();
-    return this;
-  }
-
   @Override
   public ResponseResult addData(Object... objects) {
+    data = new HashMap<>();
     assert (objects.length & 1) == 0;
     for (int i = 0; i < objects.length; i++) {
       data.put((String) objects[i], objects[++i]);
     }
-    return this;
-  }
-
-  @Override
-  public ResponseResult addData(String key, Object value) {
-    data.put(key, value);
     return this;
   }
 }

@@ -44,13 +44,13 @@ public class UserController {
   public ResponseResult insertUser(@Validated @RequestBody UserInsertParam userInsertParam) {
     User user = userService.getUserByUserName(userInsertParam.getUsername());
     if (user != null) {
-      return CommonCodeEnum.USERNAME_EXISTS_ERROR.clearData();
+      return CommonCodeEnum.USERNAME_EXISTS_ERROR;
     }
     userInsertParam.setPassword(BCrypt.hashpw(userInsertParam.getPassword(), BCrypt.gensalt()));
     user = new User();
     BeanUtils.copyProperties(userInsertParam, user);
     String userId = userService.insertUser(user);
-    return CommonCodeEnum.SUCCESS.clearData().addData("userId", userId);
+    return CommonCodeEnum.SUCCESS.addData("userId", userId);
   }
 
   @DeleteMapping("/{id}")
@@ -133,6 +133,6 @@ public class UserController {
       roles.add("classAdmin");
       menus.add("class");
     }
-    return CommonCodeEnum.SUCCESS.clearData().addData("menus", menus, "roles", roles);
+    return CommonCodeEnum.SUCCESS.addData("menus", menus, "roles", roles);
   }
 }

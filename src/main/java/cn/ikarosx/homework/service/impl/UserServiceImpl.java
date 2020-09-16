@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public ResponseResult deleteUserById(String id) {
     userRepository.deleteById(id);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new CustomException(CommonCodeEnum.DATA_NOT_FOUND));
     UpdateUtils.copyNullProperties(userUpdateParam, user);
     userRepository.save(user);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public ResponseResult logout() {
     SessionUtils.invalidate();
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @Override

@@ -59,7 +59,7 @@ public class ExceptionCatch {
     log.error("catch exception : {}", e.getMessage());
     // DAO访问数据为空
     // TODO
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -90,7 +90,7 @@ public class ExceptionCatch {
       }
       validationMessages.add(jsonObject);
     }
-    return CommonCodeEnum.INVALID_PARAM.clearData().addData("errors", validationMessages);
+    return CommonCodeEnum.INVALID_PARAM.addData("errors", validationMessages);
   }
 
   @ExceptionHandler(Exception.class)
@@ -106,7 +106,7 @@ public class ExceptionCatch {
     if (resultCode != null) {
       responseResult = resultCode;
     } else {
-      responseResult = CommonCodeEnum.SERVER_ERROR.clearData();
+      responseResult = CommonCodeEnum.SERVER_ERROR;
     }
     return responseResult;
   }

@@ -85,12 +85,6 @@
       <artifactId>poi-ooxml</artifactId>
       <version>3.17</version>
     </dependency>
-    <!-- fastdfs -->
-    <dependency>
-      <groupId>com.github.tobato</groupId>
-      <artifactId>fastdfs-client</artifactId>
-      <version>1.27.2</version>
-    </dependency>
   </dependencies>
 
   <build>

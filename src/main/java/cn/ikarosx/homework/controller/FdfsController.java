@@ -3,7 +3,6 @@ package cn.ikarosx.homework.controller;
 import cn.ikarosx.homework.entity.FileSystem;
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.util.SessionUtils;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/file")
 public class FdfsController {
-  @Autowired private FastFileStorageClient fastFileStorageClient;
   @Autowired private RestTemplate restTemplate;
 
   @Value("${fdfsUrl}")

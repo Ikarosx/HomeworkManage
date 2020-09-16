@@ -23,6 +23,4 @@ public interface ResponseResult {
   Map getData();
 
   ResponseResult addData(Object... objects);
-
-  ResponseResult addData(String key, Object value);
 }

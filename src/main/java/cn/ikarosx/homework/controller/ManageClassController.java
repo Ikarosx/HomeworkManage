@@ -67,7 +67,7 @@ public class ManageClassController {
     manageClassUser.setUserId(SessionUtils.getId());
     manageClassUser.setClassId(manageClassId);
     manageClassUserService.insertManageClassUser(manageClassUser);
-    return CommonCodeEnum.SUCCESS.clearData().addData("classId", manageClassId);
+    return CommonCodeEnum.SUCCESS.addData("classId", manageClassId);
   }
 
   @DeleteMapping("/{id}")
@@ -89,7 +89,7 @@ public class ManageClassController {
     User user = SessionUtils.getUser();
     user.setClassId(null);
     SessionUtils.setAttribute("user", user);
-    return CommonCodeEnum.SUCCESS.clearData();
+    return CommonCodeEnum.SUCCESS;
   }
 
   @PutMapping("/{id}")
@@ -134,7 +134,7 @@ public class ManageClassController {
   public ResponseResult listAllManageClassUser(@PathVariable String classId, Integer status) {
     List<ManageClassDetailInfoUser> list =
         manageClassService.listAllManageClassUser(classId, status);
-    return CommonCodeEnum.SUCCESS.clearData().addData("list", list);
+    return CommonCodeEnum.SUCCESS.addData("list", list);
   }
 
   @GetMapping("/{id}/detail")
@@ -142,7 +142,7 @@ public class ManageClassController {
   public ResponseResult getManageClassDetailInfo(@PathVariable String id) {
     if (!SessionUtils.isAdmin() && !StringUtils.equals(SessionUtils.getClassId(), id)) {
       // 不是班级成员无法查询详细信息
-      return CommonCodeEnum.PERMISSION_DENY.clearData();
+      return CommonCodeEnum.PERMISSION_DENY;
     }
     ManageClass manageClass = manageClassService.getManageClassById(id);
     ManageClassDetailInfo manageClassDetailInfo = new ManageClassDetailInfo();
@@ -156,7 +156,7 @@ public class ManageClassController {
             .findFirst()
             .orElseThrow(() -> new CustomException(ClassCodeEnum.ADMIN_NOT_FOUND_ERROR)));
     return CommonCodeEnum.SUCCESS
-        .clearData()
+
         .addData("manageClassDetailInfo", manageClassDetailInfo);
   }
 }

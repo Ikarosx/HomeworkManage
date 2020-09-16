@@ -16,3 +16,5 @@ spring:
         # 自动生成表，不过还是建议手动建
         generate-ddl: true
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+fdfsUrl: http://127.0.0.1:10000
