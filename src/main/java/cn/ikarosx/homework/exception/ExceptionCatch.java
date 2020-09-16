@@ -44,7 +44,7 @@ public class ExceptionCatch {
     builder.put(AccessDeniedException.class, CommonCodeEnum.PERMISSION_DENY);
     builder.put(
         HttpRequestMethodNotSupportedException.class,
-        CommonCodeEnum.HTTP_REQUEST_METHOD_NOT_SUPPORT_EDEXCEPTION);
+        CommonCodeEnum.HTTP_REQUEST_METHOD_NOT_SUPPORT_EXCEPTION);
     builder.put(MaxUploadSizeExceededException.class, CommonCodeEnum.FILE_SIZE_LIMIT_EXCEEDED);
   }
 

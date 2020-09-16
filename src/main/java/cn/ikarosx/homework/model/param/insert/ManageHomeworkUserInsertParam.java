@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2020/08/17 20:29
  */
 @Data
-@ApiModel(value = "作业提交记录Insert参数")
+@ApiModel(value = "作业提交记录Insert参数") 
 public class ManageHomeworkUserInsertParam {
   @ApiModelProperty(value = "作业ID")
   @NotNull

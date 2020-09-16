@@ -46,6 +46,7 @@ public class ManageHomeworkUserController {
     if (!StringUtils.equals(manageHomework.getClassId(), SessionUtils.getClassId())) {
       return CommonCodeEnum.PERMISSION_DENY;
     }
+    // 检查是否已有附件
     ManageHomeworkUser manageHomeworkUser = new ManageHomeworkUser();
     BeanUtils.copyProperties(manageHomeworkUserInsertParam, manageHomeworkUser);
     // 设置为已经提交

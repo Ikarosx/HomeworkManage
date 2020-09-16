@@ -19,7 +19,7 @@ public enum CommonCodeEnum implements ResponseResult {
   FILE_SIZE_LIMIT_EXCEEDED(false, 10004, "上传文件过大"),
   IO_EXCEPTION(false, 10005, "IO异常"),
   DATA_NOT_FOUND(false, 10006, "数据不存在"),
-  HTTP_REQUEST_METHOD_NOT_SUPPORT_EDEXCEPTION(false, 10007, "HTTP请求方法不支持"),
+  HTTP_REQUEST_METHOD_NOT_SUPPORT_EXCEPTION(false, 10007, "HTTP请求方法不支持"),
   DATA_EXIST_ERROR(false, 10008, "数据已存在"),
   EXCEL_GET_FIELD_ERROR(false, 10009, "EXCEL获取字段时获取不到"),
   EXCEL_GET_ANNOTATION_ERROR(false, 10010, "EXCEL获取注解时获取不到"),
@@ -62,17 +62,22 @@ public enum CommonCodeEnum implements ResponseResult {
   }
 
   public ResponseResult clearData() {
-    data = null;
+    data = new HashMap<>();
     return this;
   }
 
   @Override
   public ResponseResult addData(Object... objects) {
-    data = new HashMap<>();
     assert (objects.length & 1) == 0;
     for (int i = 0; i < objects.length; i++) {
       data.put((String) objects[i], objects[++i]);
     }
+    return this;
+  }
+
+  @Override
+  public ResponseResult addData(String key, Object value) {
+    data.put(key, value);
     return this;
   }
 }
