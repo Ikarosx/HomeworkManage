@@ -1,12 +1,12 @@
 package cn.ikarosx.homework.controller;
 
-import cn.ikarosx.homework.entity.FileSystem;
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.util.SessionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,14 +33,14 @@ public class FdfsController {
   @PostMapping("/upload")
   @ApiOperation("上传文件")
   public ResponseResult uploadFile(MultipartFile file) {
-    FileSystem fileSystem = new FileSystem();
-    fileSystem.setBusinessKey("homework");
-    fileSystem.setUserId(SessionUtils.getId());
+    // 设置请求的格式类型
     MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-    params.add("file", file);
-    params.add("fileSystem", fileSystem);
+    params.add("file", file.getResource());
+    params.add("fileSystem.businessKey", "homework");
+    params.add("fileSystem.userId", SessionUtils.getId());
+    HttpEntity<MultiValueMap<String, Object>> files = new HttpEntity<>(params, null);
     ResponseEntity<ResponseResult> entity =
-        restTemplate.postForEntity(fdfsUrl + "/fileSystem", file, ResponseResult.class);
+        restTemplate.postForEntity(fdfsUrl + "/fileSystem", files, ResponseResult.class);
     ResponseResult postResult = entity.getBody();
     return postResult;
   }

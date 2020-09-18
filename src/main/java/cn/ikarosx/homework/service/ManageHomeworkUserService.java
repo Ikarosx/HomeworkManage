@@ -2,6 +2,7 @@
 package cn.ikarosx.homework.service;
 
 import cn.ikarosx.homework.entity.ManageHomeworkUser;
+import cn.ikarosx.homework.model.param.insert.ManageHomeworkUserInsertParam;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkUserQueryParam;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -23,5 +24,7 @@ public interface ManageHomeworkUserService {
       int page, int size, ManageHomeworkUserQueryParam manageHomeworkUserQueryParam);
 
   List<ManageHomeworkUser> listAllManageHomeworkUsers();
+
+    String submitHomework(ManageHomeworkUserInsertParam manageHomeworkUserInsertParam);
 }
     

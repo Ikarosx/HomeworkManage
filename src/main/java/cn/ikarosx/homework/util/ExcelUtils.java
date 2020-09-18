@@ -81,7 +81,7 @@ public class ExcelUtils {
    * 读取excel反射实体
    *
    * @param file MultipartFile
-   * @param clazz entity
+   * @param clazz cn.ikarosx.homework.entity
    */
   public static <T extends Object> List<T> readExcelObject(MultipartFile file, Class<T> clazz) {
 

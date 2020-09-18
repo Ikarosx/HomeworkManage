@@ -1,11 +1,14 @@
 package cn.ikarosx.homework.exception;
 
+import cn.ikarosx.homework.model.ResponseResultDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Map;
 
 /**
  * @author Ikarosx
  * @date 2020/1/26 16:59
  */
+@JsonDeserialize(using = ResponseResultDeserialize.class)
 public interface ResponseResult {
   /** @return 操作是否成功, true为成功，false操作失败 */
   boolean getSuccess();

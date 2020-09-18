@@ -38,24 +38,11 @@ public class ManageHomeworkUserController {
 
   @PostMapping
   @ApiOperation(value = "提交作业")
-  public ResponseResult insertManageHomeworkUser(
+  public ResponseResult submitHomeworkUser(
       @Validated @RequestBody ManageHomeworkUserInsertParam manageHomeworkUserInsertParam) {
-    ManageHomework manageHomework =
-        manageHomeworkService.getManageHomeworkById(manageHomeworkUserInsertParam.getHomeworkId());
-    // 保证要提交作业的班级是自己所属班级
-    if (!StringUtils.equals(manageHomework.getClassId(), SessionUtils.getClassId())) {
-      return CommonCodeEnum.PERMISSION_DENY;
-    }
-    // 检查是否已有附件
-    ManageHomeworkUser manageHomeworkUser = new ManageHomeworkUser();
-    BeanUtils.copyProperties(manageHomeworkUserInsertParam, manageHomeworkUser);
-    // 设置为已经提交
-    manageHomeworkUser.setStatus(1);
-    manageHomeworkUser.setUserId(SessionUtils.getId());
-    manageHomeworkUserService.insertManageHomeworkUser(manageHomeworkUser);
-    return CommonCodeEnum.SUCCESS
-
-        .addData("manageHomeWorkId", manageHomeworkUser.getId());
+    String manageHomeWorkId =
+        manageHomeworkUserService.submitHomework(manageHomeworkUserInsertParam);
+    return CommonCodeEnum.SUCCESS.addData("manageHomeWorkId", manageHomeWorkId);
   }
 
   //  @DeleteMapping("/{id}")
