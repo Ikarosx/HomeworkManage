@@ -7,7 +7,7 @@ spring:
     datasource:
         username: username
         password: password
-        url: jdbc:mysql://127.0.0.1:3306/restaurant?useSSL=false&CharacterEncoding=UTF-8
+        url: jdbc:mysql://127.0.0.1:3306/restaurant?useSSL=false&CharacterEncoding=UTF-8&serverTimezone=Asia/Shanghai
         driver-class-name: com.mysql.cj.jdbc.Driver
         hikari:
             max-lifetime: 900000
