@@ -135,7 +135,12 @@ public class ManageHomeworkUserServiceImpl implements ManageHomeworkUserService 
     // 插入作业对应文件，如何判断文件属于该用户
     Boolean hasPermission =
         restTemplate.getForObject(
-            fdfsUrl + "/fileSystem/owner?userId=" + SessionUtils.getId() + "&fileIds=" + fileIds + "&businessKey=homework",
+            fdfsUrl
+                + "/fileSystem/owner?userId="
+                + SessionUtils.getId()
+                + "&fileIds="
+                + fileIds
+                + "&businessKey=homework",
             Boolean.class);
     if (hasPermission == null || !hasPermission) {
       // 如果没有权限
@@ -161,5 +166,13 @@ public class ManageHomeworkUserServiceImpl implements ManageHomeworkUserService 
     manageHomeworkFileRepository.saveAll(manageHomeworkFileList);
     // 返回提交作业记录ID
     return manageHomeworkUser.getId();
+  }
+
+  @Override
+  public void downloadManageHomeworkUserById(String id) {
+    List<ManageHomeworkFile> files = manageHomeworkFileRepository.findByHomeworkUserId(id);
+    List<String> fileIds =
+        files.stream().map(ManageHomeworkFile::getFileId).collect(Collectors.toList());
+    //    restTemplate.getForObject(fdfsUrl + "", fileIds);
   }
 }

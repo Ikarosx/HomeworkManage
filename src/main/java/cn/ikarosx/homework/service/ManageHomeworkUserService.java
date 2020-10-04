@@ -26,5 +26,7 @@ public interface ManageHomeworkUserService {
   List<ManageHomeworkUser> listAllManageHomeworkUsers();
 
     String submitHomework(ManageHomeworkUserInsertParam manageHomeworkUserInsertParam);
+
+    void downloadManageHomeworkUserById(String id);
 }
     

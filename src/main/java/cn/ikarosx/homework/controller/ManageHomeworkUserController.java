@@ -3,10 +3,12 @@ package cn.ikarosx.homework.controller;
 import cn.ikarosx.homework.entity.ManageHomework;
 import cn.ikarosx.homework.entity.ManageHomeworkUser;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
+import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.model.param.insert.ManageHomeworkUserInsertParam;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkUserQueryParam;
 import cn.ikarosx.homework.model.param.update.ManageHomeworkUserUpdateParam;
+import cn.ikarosx.homework.service.ManageHomeworkFileService;
 import cn.ikarosx.homework.service.ManageHomeworkService;
 import cn.ikarosx.homework.service.ManageHomeworkUserService;
 import cn.ikarosx.homework.util.SessionUtils;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ManageHomeworkUserController {
   @Autowired private ManageHomeworkUserService manageHomeworkUserService;
   @Autowired private ManageHomeworkService manageHomeworkService;
+  @Autowired private ManageHomeworkFileService manageHomeworkFileService;
 
   @PostMapping
   @ApiOperation(value = "提交作业")
@@ -72,6 +75,17 @@ public class ManageHomeworkUserController {
       return CommonCodeEnum.PERMISSION_DENY;
     }
     return CommonCodeEnum.SUCCESS.addData("manageHomeworkUser", manageHomeworkUser);
+  }
+
+  @GetMapping("/{id}/download")
+  @ApiOperation(value = "通过ID下载所属作业附件")
+  public void downloadManageHomeworkUserById(@PathVariable String id) {
+    ManageHomeworkUser manageHomeworkUser = manageHomeworkUserService.getManageHomeworkUserById(id);
+    // 鉴权
+    if (!StringUtils.equals(manageHomeworkUser.getUserId(), SessionUtils.getId())) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    manageHomeworkUserService.downloadManageHomeworkUserById(id);
   }
 
   //  @GetMapping("/list/{page}/{size}")
