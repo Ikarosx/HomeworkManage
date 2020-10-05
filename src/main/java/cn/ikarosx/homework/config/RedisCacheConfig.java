@@ -21,12 +21,14 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 /**
+ * SpringCache-Redis配置
+ *
  * @author 许培宇
  * @date 2020/10/04 22:55
  */
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+public class RedisCacheConfig extends CachingConfigurerSupport {
 
   /** 不重写的话 ，采用默认策略 ①如果方法没有参数，则使用0作为key ②如果只有一个参数的话则使用该参数作为key。 ③如果参数多于一个的话则使用所有参数的hashCode作为key */
   @Override

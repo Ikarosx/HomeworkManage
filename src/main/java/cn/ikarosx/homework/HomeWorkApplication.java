@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableJpaAuditing
+@EnableRedisHttpSession
 public class HomeWorkApplication {
   public static void main(String[] args) {
     SpringApplication.run(HomeWorkApplication.class, args);
