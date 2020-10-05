@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -136,6 +137,7 @@ public class ManageHomeworkController {
 
   @GetMapping("/{id}/finishinfo")
   @ApiOperation(value = "查询某个作业的完成情况", notes = "只有班级成员可以查看")
+//  @Cacheable("getHomeworkFinishInfo")
   public ResponseResult getHomeworkFinishInfo(
       @PathVariable String id, @RequestParam String classId) {
     // 只有班级成员可以查看

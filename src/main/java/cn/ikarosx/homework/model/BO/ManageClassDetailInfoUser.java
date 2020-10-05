@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Ikarosx
  * @date 2020-08-15 01:42:01
  */
 @Data
+@NoArgsConstructor
 public class ManageClassDetailInfoUser implements Serializable {
   private String id;
   private String username;

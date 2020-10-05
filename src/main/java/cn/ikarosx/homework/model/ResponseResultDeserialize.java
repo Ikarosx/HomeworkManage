@@ -2,12 +2,14 @@ package cn.ikarosx.homework.model;
 
 import cn.ikarosx.homework.exception.ResponseResult;
 import cn.ikarosx.homework.exception.ResponseResultImpl;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import java.io.IOException;
 import java.util.Map;
 
@@ -28,6 +30,8 @@ public class ResponseResultDeserialize extends JsonDeserializer<ResponseResult> 
     int code = (int) node.get("code").numberValue();
     JsonNode data = node.get("data");
     ObjectMapper mapper = new ObjectMapper();
+    mapper.activateDefaultTyping(
+        LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
     Map result = mapper.convertValue(data, Map.class);
     ResponseResultImpl responseResult = new ResponseResultImpl(success, code, message);
     responseResult.setData(result);

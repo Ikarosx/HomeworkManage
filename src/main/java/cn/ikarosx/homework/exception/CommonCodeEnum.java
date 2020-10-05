@@ -41,6 +41,13 @@ public enum CommonCodeEnum implements ResponseResult {
     this.message = message;
   }
 
+  CommonCodeEnum(boolean success, int code, String message, Map<String, Object> data) {
+    this.success = success;
+    this.code = code;
+    this.message = message;
+    this.data = data;
+  }
+
   @Override
   public boolean getSuccess() {
     return success;
