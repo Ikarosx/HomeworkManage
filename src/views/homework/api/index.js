@@ -45,7 +45,10 @@ export const downloadHomeworkFinishInfos = params => {
   );
 };
 
-
 export const uploadFile = params => {
   return http.requestPostForm(apiUrl + "/file/upload", params);
-}
+};
+
+export const getHomeworkListByHomeworkUserId = id => {
+  return http.requestGet(apiUrl + "/manageHomeworkUser/" + id + "/files");
+};
