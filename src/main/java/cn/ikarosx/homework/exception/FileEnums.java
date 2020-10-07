@@ -11,7 +11,9 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum FileEnums implements ResponseResult {
   /** 相关文件相关 12000 */
-  UPLOAD_FILE_ERROR(true, 12001, "上传文件失败");
+  UPLOAD_FILE_ERROR(true, 12001, "上传文件失败"),
+
+  GET_FILE_NAME_ERROR(true, 12002, "获取文件名字错误");
 
   private boolean success;
   private int code;

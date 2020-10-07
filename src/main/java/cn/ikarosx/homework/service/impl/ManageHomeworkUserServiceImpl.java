@@ -6,6 +6,7 @@ import cn.ikarosx.homework.entity.ManageHomeworkUser;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.CustomException;
 import cn.ikarosx.homework.exception.ExceptionCast;
+import cn.ikarosx.homework.exception.FileEnums;
 import cn.ikarosx.homework.model.param.insert.ManageHomeworkUserInsertParam;
 import cn.ikarosx.homework.model.param.query.ManageHomeworkUserQueryParam;
 import cn.ikarosx.homework.repository.ManageHomeworkFileRepository;
@@ -148,6 +149,12 @@ public class ManageHomeworkUserServiceImpl implements ManageHomeworkUserService 
       throw new CustomException(
           CommonCodeEnum.PERMISSION_DENY.addData("errorMsg", "无权操作提交列表中的某些文件"));
     }
+    List<String> names =
+        restTemplate.getForObject(fdfsUrl + "/fileSystem/names?ids=" + fileIds, List.class);
+    if (names == null || names.size() != fileIds.split(",").length) {
+      log.error("获取的名字列表为{},与文件ID列表长度不同", names);
+      throw new CustomException(FileEnums.GET_FILE_NAME_ERROR);
+    }
     // 插入作业记录表
     manageHomeworkUserRepository.save(manageHomeworkUser);
     // 构建manageHomeworkFile列表
@@ -162,6 +169,9 @@ public class ManageHomeworkUserServiceImpl implements ManageHomeworkUserService 
                   return manageHomeworkFile;
                 })
             .collect(Collectors.toList());
+    for (int i = 0; i < manageHomeworkFileList.size(); i++) {
+      manageHomeworkFileList.get(i).setFileName(names.get(i));
+    }
     // 批量插入
     manageHomeworkFileRepository.saveAll(manageHomeworkFileList);
     // 返回提交作业记录ID

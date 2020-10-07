@@ -24,7 +24,7 @@ public interface ManageHomeworkRepository extends JpaRepository<ManageHomework, 
       @Param("id") String id, @Param("classId") String classId);
 
   @Query(
-      "SELECT new cn.ikarosx.homework.model.BO.HomeworkFinishInfo(u.nickname, u.studentNo, hu.status, hu.createTime) FROM User u LEFT JOIN  ManageHomeworkUser hu ON hu.userId = u.id AND hu.homeworkId = :homeworkId WHERE u.classId = :classId ORDER BY hu.status, u.studentNo")
+      "SELECT new cn.ikarosx.homework.model.BO.HomeworkFinishInfo(hu.id, u.nickname, u.studentNo, hu.status, hu.createTime) FROM User u LEFT JOIN  ManageHomeworkUser hu ON hu.userId = u.id AND hu.homeworkId = :homeworkId WHERE u.classId = :classId ORDER BY hu.status, u.studentNo")
   List<HomeworkFinishInfo> getHomeworkFinishInfo(
       @Param("classId") String classId, @Param("homeworkId") String homeworkId);
 }

@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Ikarosx
  * @date 2020/1/26 16:59
  */
-@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class", visible = true)
+//@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class", visible = true)
 @JsonDeserialize(using = ResponseResultDeserialize.class)
 public interface ResponseResult {
   /** @return 操作是否成功, true为成功，false操作失败 */

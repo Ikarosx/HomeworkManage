@@ -1,4 +1,3 @@
-
 package cn.ikarosx.homework.service;
 
 import cn.ikarosx.homework.entity.ManageHomeworkUser;
@@ -25,8 +24,7 @@ public interface ManageHomeworkUserService {
 
   List<ManageHomeworkUser> listAllManageHomeworkUsers();
 
-    String submitHomework(ManageHomeworkUserInsertParam manageHomeworkUserInsertParam);
+  String submitHomework(ManageHomeworkUserInsertParam manageHomeworkUserInsertParam);
 
-    void downloadManageHomeworkUserById(String id);
+  void downloadManageHomeworkUserById(String id);
 }
-    

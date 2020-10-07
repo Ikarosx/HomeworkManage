@@ -1,5 +1,6 @@
 package cn.ikarosx.homework.service.impl;
 
+import cn.ikarosx.homework.entity.FileSystem;
 import cn.ikarosx.homework.entity.ManageHomeworkFile;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.ExceptionCast;
@@ -88,5 +89,12 @@ public class ManageHomeworkFileServiceImpl implements ManageHomeworkFileService 
   public ResponseResult listAllManageHomeworkFiles() {
     List<ManageHomeworkFile> list = manageHomeworkFileRepository.findAll();
     return CommonCodeEnum.SUCCESS.addData("list", list, "total", list.size());
+  }
+
+  @Override
+  public List<ManageHomeworkFile> getManageHomeworkFileListByHomeWorkUserId(String id) {
+    List<ManageHomeworkFile> fileList = manageHomeworkFileRepository
+        .findByHomeworkUserId(id);
+    return fileList;
   }
 }

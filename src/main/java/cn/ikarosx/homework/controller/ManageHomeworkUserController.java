@@ -1,6 +1,6 @@
 package cn.ikarosx.homework.controller;
 
-import cn.ikarosx.homework.entity.ManageHomework;
+import cn.ikarosx.homework.entity.ManageHomeworkFile;
 import cn.ikarosx.homework.entity.ManageHomeworkUser;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.ExceptionCast;
@@ -75,6 +75,19 @@ public class ManageHomeworkUserController {
       return CommonCodeEnum.PERMISSION_DENY;
     }
     return CommonCodeEnum.SUCCESS.addData("manageHomeworkUser", manageHomeworkUser);
+  }
+
+  @GetMapping("/{id}/files")
+  @ApiOperation(value = "通过ID查询作业附件列表")
+  public ResponseResult getManageHomeworkFileListById(@PathVariable String id) {
+    ManageHomeworkUser manageHomeworkUser = manageHomeworkUserService.getManageHomeworkUserById(id);
+    // 鉴权
+    if (!StringUtils.equals(manageHomeworkUser.getUserId(), SessionUtils.getId())) {
+      return CommonCodeEnum.PERMISSION_DENY;
+    }
+    List<ManageHomeworkFile> fileSystemList =
+        manageHomeworkFileService.getManageHomeworkFileListByHomeWorkUserId(id);
+    return CommonCodeEnum.SUCCESS.addData("fileList", fileSystemList);
   }
 
   @GetMapping("/{id}/download")

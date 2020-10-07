@@ -36,6 +36,9 @@ public class ManageHomeworkFile implements Serializable {
   @ApiModelProperty(value = "文件ID")
   private String fileId;
 
+  @ApiModelProperty(value = "文件名称")
+  private String fileName;
+
   @CreatedDate
   @ApiModelProperty(value = "创建时间", hidden = true)
   private Date createTime;
