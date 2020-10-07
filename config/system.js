@@ -1,6 +1,6 @@
 export const systemConfig = {
   // apiUrl: "http://api.homework.ikarosx.cn",
-  apiUrl: "http://temp.ikarosx.cn:8080",
+  apiUrl: "http://temp.ikarosx.cn",
   imgUrl: "http://img.budingcc.cn/",
   openAuthenticate: false,
   openAuthorize: false

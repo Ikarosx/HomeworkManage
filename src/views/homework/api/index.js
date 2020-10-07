@@ -44,3 +44,8 @@ export const downloadHomeworkFinishInfos = params => {
       params.classId
   );
 };
+
+
+export const uploadFile = params => {
+  return http.requestPostForm(apiUrl + "/file/upload", params);
+}
