@@ -22,7 +22,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -140,7 +139,6 @@ public class ManageClassController {
 
   @GetMapping("/{id}/detail")
   @ApiOperation(value = "获取班级详细信息")
-  @Cacheable(value = "getManageClassDetailInfo")
   public ResponseResult getManageClassDetailInfo(@PathVariable String id) {
     if (!SessionUtils.isAdmin() && !StringUtils.equals(SessionUtils.getClassId(), id)) {
       // 不是班级成员无法查询详细信息
