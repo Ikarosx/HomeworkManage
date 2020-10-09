@@ -18,12 +18,13 @@
       </el-checkbox-group>
     </el-row>
     <el-row type="flex" justify="end">
-      <el-button type="primary">下载文件</el-button>
+      <el-button type="primary" @click="download">下载文件</el-button>
     </el-row>
   </div>
 </template>
 <script>
 import * as homeworkApi from "../api";
+import { systemConfig } from "@/../config/system";
 import { mapGetters } from "vuex";
 export default {
   computed: {},
@@ -32,7 +33,7 @@ export default {
       this.getHomeworkListByHomeworkUserId(this.homeworkUserId);
     },
   },
-  mounted(){
+  mounted() {
     this.getHomeworkListByHomeworkUserId(this.homeworkUserId);
   },
   props: {
@@ -77,6 +78,39 @@ export default {
           }
         })
         .catch((error) => {});
+    },
+    download() {
+      if (this.checkFileList == null || this.checkFileList.length == 0) {
+        this.$message.error("下载文件列表不能为空");
+        return;
+      }
+      let homeworkIds = this.checkFileList.join(",");
+      let url =
+        systemConfig.apiUrl +
+        "/manageHomeworkUser/" +
+        this.homeworkUserId +
+        "/download?homeworkIds=" +
+        homeworkIds;
+      window.open(url);
+      // this.openPostWindow(url, homeworkIds);
+    },
+    openPostWindow(url, homeworkIds) {
+      var newWin = window.open(),
+        formStr = "";
+      //设置样式为隐藏，打开新标签再跳转页面前，如果有可现实的表单选项，用户会看到表单内容数据
+      formStr =
+        '<form style="visibility:hidden;" method="POST" action="' +
+        url +
+        '">' +
+        '<input type="hidden" name="homeworkIds" value="' +
+        homeworkIds +
+        '" />' +
+        "</form>";
+
+      newWin.document.body.innerHTML = formStr;
+      newWin.document.forms[0].submit();
+
+      return newWin;
     },
   },
 };

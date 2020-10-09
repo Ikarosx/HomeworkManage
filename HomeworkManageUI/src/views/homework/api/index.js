@@ -1,6 +1,6 @@
 import http from "@/api/public";
 import { systemConfig } from "@/../config/system";
-
+import qs from "qs";
 const apiUrl = systemConfig.apiUrl;
 
 export const insertHomework = params => {
@@ -51,4 +51,11 @@ export const uploadFile = params => {
 
 export const getHomeworkListByHomeworkUserId = id => {
   return http.requestGet(apiUrl + "/manageHomeworkUser/" + id + "/files");
+};
+
+export const download = (homeworkUserId, params) => {
+  return http.requestPostForm(
+    apiUrl + "/manageHomeworkUser/" + homeworkUserId + "/download",
+    qs.stringify(params)
+  );
 };

@@ -15,14 +15,20 @@ import cn.ikarosx.homework.service.ManageHomeworkService;
 import cn.ikarosx.homework.service.ManageHomeworkUserService;
 import cn.ikarosx.homework.util.SessionUtils;
 import cn.ikarosx.homework.util.UpdateUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -31,6 +37,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author Ikarosx
@@ -179,10 +188,46 @@ public class ManageHomeworkUserServiceImpl implements ManageHomeworkUserService 
   }
 
   @Override
-  public void downloadManageHomeworkUserById(String id) {
-    List<ManageHomeworkFile> files = manageHomeworkFileRepository.findByHomeworkUserId(id);
-    List<String> fileIds =
-        files.stream().map(ManageHomeworkFile::getFileId).collect(Collectors.toList());
-    //    restTemplate.getForObject(fdfsUrl + "", fileIds);
+  public void downloadManageHomeworkUserById(String id, String ids) {
+    // 用户传来的fileIds
+    List<String> idsByUser = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+    List<ManageHomeworkFile> files =
+        manageHomeworkFileRepository.findByHomeworkUserIdAndIdIn(id, idsByUser);
+    if (idsByUser.size() != files.size()) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    String fileIds =
+        files.stream().map(ManageHomeworkFile::getFileId).collect(Collectors.joining(","));
+    log.debug("fileIds：{}", fileIds);
+
+    Resource resource =
+        restTemplate.getForObject(
+            fdfsUrl + "/fileSystem/download?fileIds=" + fileIds, Resource.class);
+
+    RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+    ServletRequestAttributes servletRequestAttributes =
+        (ServletRequestAttributes) requestAttributes;
+    HttpServletResponse response = servletRequestAttributes.getResponse();
+    response.setContentType("application/octet-stream; charset=UTF-8");
+    if (files.size() == 1) {
+      String fileName = files.get(0).getFileName();
+      // 解决中文文件名
+      fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+      response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+    } else {
+      response.setHeader("Content-Disposition", "attachment; filename=" + id + ".zip");
+    }
+
+    try (InputStream inputStream = resource.getInputStream();
+        ServletOutputStream outputStream = response.getOutputStream()) {
+      byte[] bytes = new byte[1024];
+      int i;
+      while ((i = inputStream.read(bytes)) != -1) {
+        outputStream.write(bytes, 0, i);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.error("IO Exception HomeworkUserId is {}", id, e);
+    }
   }
 }

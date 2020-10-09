@@ -91,14 +91,17 @@ public class ManageHomeworkUserController {
   }
 
   @GetMapping("/{id}/download")
-  @ApiOperation(value = "通过ID下载所属作业附件")
-  public void downloadManageHomeworkUserById(@PathVariable String id) {
+  @ApiOperation(value = "用户自己通过作业ID下载附件")
+  public void downloadManageHomeworkUserById(@PathVariable String id, String homeworkIds) {
+    if (StringUtils.isBlank(homeworkIds)) {
+      ExceptionCast.cast(CommonCodeEnum.INVALID_PARAM);
+    }
     ManageHomeworkUser manageHomeworkUser = manageHomeworkUserService.getManageHomeworkUserById(id);
     // 鉴权
     if (!StringUtils.equals(manageHomeworkUser.getUserId(), SessionUtils.getId())) {
       ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
     }
-    manageHomeworkUserService.downloadManageHomeworkUserById(id);
+    manageHomeworkUserService.downloadManageHomeworkUserById(id, homeworkIds);
   }
 
   //  @GetMapping("/list/{page}/{size}")
