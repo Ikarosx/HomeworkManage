@@ -32,10 +32,13 @@ export default {
       this.getHomeworkListByHomeworkUserId(this.homeworkUserId);
     },
   },
+  mounted(){
+    this.getHomeworkListByHomeworkUserId(this.homeworkUserId);
+  },
   props: {
     homeworkUserId: {
       type: String,
-      default: "",
+      default: "-1",
     },
   },
   data() {
