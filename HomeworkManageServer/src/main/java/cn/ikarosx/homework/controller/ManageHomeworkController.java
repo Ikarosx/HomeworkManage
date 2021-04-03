@@ -3,6 +3,7 @@ package cn.ikarosx.homework.controller;
 import cn.ikarosx.homework.aspect.NeedAdmin;
 import cn.ikarosx.homework.aspect.PreAuthorize;
 import cn.ikarosx.homework.entity.ManageHomework;
+import cn.ikarosx.homework.entity.ManageHomeworkUser;
 import cn.ikarosx.homework.exception.CommonCodeEnum;
 import cn.ikarosx.homework.exception.ExceptionCast;
 import cn.ikarosx.homework.exception.ResponseResult;
@@ -179,5 +180,16 @@ public class ManageHomeworkController {
         "excel/HomeworkFinishInfoTemplate.xlsx",
         HomeworkFinishInfoExcelModel.class,
         datas);
+  }
+
+  @GetMapping("/{id}/files")
+  @ApiOperation(value = "通过作业ID下载所有附件")
+  public void downloadHomeworkAllFiles(@PathVariable String id) {
+    ManageHomework manageHomework = manageHomeworkService.getManageHomeworkById(id);
+    // 鉴权
+    if (!StringUtils.equals(manageHomework.getClassId(), SessionUtils.getClassId())) {
+      ExceptionCast.cast(CommonCodeEnum.PERMISSION_DENY);
+    }
+    manageHomeworkService.downloadHomeworkAllFiles(manageHomework);
   }
 }

@@ -49,6 +49,7 @@ router.beforeEach(async (to, from, next) => {
       // 解决权限需要刷新才显示的问题
       // store.commit("user/SET_ROLES", data.data.roles);
       let user = JSON.parse(window.localStorage.getItem("user"));
+      console.log(data)
       user.roles = data.data.roles;
       store.dispatch("user/setUserInfo", user);
       window.localStorage.setItem("user", JSON.stringify(user));

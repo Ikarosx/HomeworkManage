@@ -64,7 +64,6 @@
                 circle
                 size="mini"
                 icon="el-icon-s-data"
-                v-if="isAdmin || isClassAdmin"
                 @click="handleCollect(scope.$index, scope.row)"
               />
               <el-button

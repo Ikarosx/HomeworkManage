@@ -1,4 +1,3 @@
-
 package cn.ikarosx.homework.service;
 
 import cn.ikarosx.homework.entity.ManageHomework;
@@ -30,6 +29,7 @@ public interface ManageHomeworkService {
 
   List<ManageHomeworkDetails> listAllManageHomeworksByCurrentUser();
 
-    List<HomeworkFinishInfo> getHomeworkFinishInfo(String classId, String homeworkId);
+  List<HomeworkFinishInfo> getHomeworkFinishInfo(String classId, String homeworkId);
+
+  void downloadHomeworkAllFiles(ManageHomework manageHomework);
 }
-    

@@ -18,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
@@ -46,6 +47,7 @@ public class ExceptionCatch {
         HttpRequestMethodNotSupportedException.class,
         CommonCodeEnum.HTTP_REQUEST_METHOD_NOT_SUPPORT_EXCEPTION);
     builder.put(MaxUploadSizeExceededException.class, CommonCodeEnum.FILE_SIZE_LIMIT_EXCEEDED);
+    builder.put(MethodArgumentTypeMismatchException.class, CommonCodeEnum.INVALID_PARAM);
   }
 
   @ExceptionHandler(CustomException.class)

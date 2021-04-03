@@ -10,8 +10,7 @@ spring:
         url: jdbc:mysql://127.0.0.1:3306/restaurant?useSSL=false&CharacterEncoding=UTF-8&serverTimezone=Asia/Shanghai
         driver-class-name: com.mysql.cj.jdbc.Driver
         hikari:
-            max-lifetime: 900000
-            minimum-idle: 10
+            max-lifetime: 180000
     jpa:
         # 自动生成表，不过还是建议手动建
         generate-ddl: true

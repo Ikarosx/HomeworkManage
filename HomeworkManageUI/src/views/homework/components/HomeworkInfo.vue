@@ -36,13 +36,6 @@
               v-if="scope.row.status === 1"
               @click="showHomeworkFileList(scope.row.homeworkUserId)"
             ></el-button>
-            <el-button
-              icon="el-icon-download"
-              circle
-              type="success"
-              size="mini"
-              v-if="scope.row.status === 1"
-            ></el-button>
           </template>
         </el-table-column>
         <el-table-column label="完成日期" align="center">
@@ -60,6 +53,7 @@
       <homework-list :homeworkUserId="homeworkUserId" />
     </el-dialog>
     <el-row type="flex" justify="end">
+      <el-button type="primary" @click="downloadHomeworkAllFiles" v-if="isAdmin || isClassAdmin">下载全部</el-button>
       <el-button type="primary" @click="exportExcel">导出Excel数据</el-button>
     </el-row>
   </div>
@@ -73,7 +67,7 @@ export default {
     HomeworkList,
   },
   computed: {
-    ...mapGetters(["classId"]),
+    ...mapGetters(["isClassAdmin", "isAdmin","classId"]),
   },
   props: {
     homeworkFinishInfos: {

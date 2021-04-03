@@ -149,4 +149,9 @@ public class ManageHomeworkServiceImpl implements ManageHomeworkService {
         manageHomeworkRepository.getHomeworkFinishInfo(classId, homeworkId);
     return list;
   }
+
+  @Override
+  public void downloadHomeworkAllFiles(ManageHomework manageHomework) {
+    //        manageHomeworkRepository.
+  }
 }

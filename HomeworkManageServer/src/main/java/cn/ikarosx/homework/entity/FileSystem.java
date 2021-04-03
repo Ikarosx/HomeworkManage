@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -71,4 +72,5 @@ public class FileSystem implements Serializable {
   @LastModifiedDate
   @ApiModelProperty(value = "更新时间", hidden = true)
   private Date updateTime;
+
 }

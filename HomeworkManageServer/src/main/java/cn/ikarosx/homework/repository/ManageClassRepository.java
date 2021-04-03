@@ -3,6 +3,8 @@ package cn.ikarosx.homework.repository;
 import cn.ikarosx.homework.entity.ManageClass;
 import cn.ikarosx.homework.model.BO.ManageClassDetailInfoUser;
 import java.util.List;
+
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
