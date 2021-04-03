@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>cn.ikarosx</groupId>
-  <artifactId>homeworkManager</artifactId>
+  <artifactId>homework-manager</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
@@ -14,6 +14,8 @@
     <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
     <applicationName>${project.artifactId}</applicationName>
     <springfox-swagger.version>2.9.2</springfox-swagger.version>
+    <!--docker私服地址-->
+    <docker.repostory>8.129.178.143:5000</docker.repostory>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -162,6 +164,29 @@
             <!--自动打数字序号-->
             <sectnums>true</sectnums>
           </attributes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.4.13</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <!--如果package时不想用docker打包,就注释掉这个goal-->
+              <goal>build</goal>
+              <goal>push</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repository>${docker.repostory}/${project.artifactId}</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <!--提供参数向Dockerfile传递-->
+            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
         </configuration>
       </plugin>
     </plugins>
