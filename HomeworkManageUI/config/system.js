@@ -1,7 +1,7 @@
 export const systemConfig = {
   // apiUrl: "http://api.homework.ikarosx.cn",
-  apiUrl: "http://127.0.0.1",
-  imgUrl: "http://img.budingcc.cn/",
+  apiUrl: "http://homework.ikarosx.cn/api",
+  // imgUrl: "http://img.budingcc.cn/",
   openAuthenticate: false,
   openAuthorize: false
 };
