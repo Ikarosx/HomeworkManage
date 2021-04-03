@@ -16,3 +16,14 @@
 可以注册  
 也可以使用测试账号：
 Ikarosx 123456
+
+### Web
+界面在UI文件夹  
+```shell
+npm install
+npm run dev
+```
+
+### 后端
+SpringBoot  
+改下基本配置文件即可
