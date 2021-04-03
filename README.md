@@ -24,6 +24,8 @@ npm install
 npm run dev
 ```
 
+<img src="https://ikaros-picture.oss-cn-shenzhen.aliyuncs.com/typora/20210403203648.png"/>
+
 ### 后端
 SpringBoot  
 改下基本配置文件即可
