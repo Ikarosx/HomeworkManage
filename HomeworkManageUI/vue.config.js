@@ -81,6 +81,13 @@ module.exports = {
       })
       .end()
 
+    config.set('externals', {
+      'vue': 'Vue',
+      'vue-router': 'VueRouter',
+      'vuex': 'Vuex',
+      'element-ui': 'ELEMENT'
+    })
+
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development',
